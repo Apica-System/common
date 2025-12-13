@@ -1,4 +1,5 @@
-﻿pub enum ValueKind {
+﻿#[derive(PartialEq, Debug)]
+pub enum ValueKind {
     Null,
     ElementPointer,
     Any,
