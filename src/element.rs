@@ -12,15 +12,15 @@ bitflags! {
 
 pub struct Element {
     modifier: ElementModifier,
-    value: Box<dyn Value>,
+    value: Value,
 }
 
 impl Element {
-    pub fn init(modifier: ElementModifier, value: Box<dyn Value>) -> Element {
+    pub fn init(modifier: ElementModifier, value: Value) -> Element {
         return Element{modifier, value};
     }
 
-    pub fn get_value(&self) -> &Box<dyn Value> {
+    pub fn get_value(&self) -> &Value {
         return &self.value;
     }
 

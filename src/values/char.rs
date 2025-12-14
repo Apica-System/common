@@ -1,29 +1,5 @@
-﻿use crate::values::value::{Value, ValueKind};
-
-pub struct ValueChar {
+﻿pub struct ValueChar {
     value: Option<char>,
-}
-
-impl Value for ValueChar {
-    fn get_kind(&self) -> ValueKind {
-        return ValueKind::Char;
-    }
-
-    fn show(&self, end: char) {
-        if let Some(val) = self.value {
-            print!("{val}{end}");
-        } else {
-            print!("null{end}");
-        }
-    }
-
-    fn is_null(&self) -> bool {
-        return self.value.is_none();
-    }
-
-    fn get_type_representation(&self) -> &str {
-        return "char";
-    }
 }
 
 impl ValueChar {
@@ -35,6 +11,22 @@ impl ValueChar {
         return ValueChar { value: Some(value) };
     }
 
+    pub fn show(&self, end: char) {
+        if let Some(val) = self.value {
+            print!("{val}{end}");
+        } else {
+            print!("null{end}");
+        }
+    }
+    
+    pub fn is_null(&self) -> bool {
+        return self.value.is_none();
+    }
+    
+    pub fn get_type_representation(&self) -> &str {
+        return "char";
+    }
+    
     pub fn get_value(&self) -> Option<char> {
         return self.value;
     }

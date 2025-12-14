@@ -1,15 +1,19 @@
-﻿use crate::values::value::{Value, ValueKind};
+﻿use crate::values::value::Value;
 
 pub struct ValueAny {
-    internal: Option<Box<dyn Value>>,
+    internal: Option<Value>,
 }
 
-impl Value for ValueAny {
-    fn get_kind(&self) -> ValueKind {
-        return ValueKind::Any
+impl ValueAny {
+    pub fn init_empty() -> ValueAny {
+        return ValueAny { internal: None };
     }
-
-    fn show(&self, end: char) {
+    
+    pub fn init_with(value: Value) -> ValueAny {
+        return ValueAny { internal: Some(value) };
+    }
+    
+    pub fn show(&self, end: char) {
         print!("any<");
         if let Some(val) = &self.internal {
             val.show('\0');
@@ -19,30 +23,20 @@ impl Value for ValueAny {
 
         print!(">{end}");
     }
-
-    fn is_null(&self) -> bool {
+    
+    pub fn is_null(&self) -> bool {
         return self.internal.is_none();
     }
-
-    fn get_type_representation(&self) -> &str {
-        if let Some(val) = &self.internal {
-            return val.get_type_representation();
+    
+    pub fn get_type_representation(&self) -> &str {
+        return if let Some(val) = &self.internal {
+            val.get_type_representation()
         } else {
-            return "any<null>";
+            "any<null>"
         }
     }
-}
-
-impl ValueAny {
-    pub fn init_empty() -> ValueAny {
-        return ValueAny { internal: None };
-    }
     
-    pub fn init_with(value: Box<dyn Value>) -> ValueAny {
-        return ValueAny { internal: Some(value) };
-    }
-    
-    pub fn get_value(&self) -> &Option<Box<dyn Value>> {
+    pub fn get_value(&self) -> &Option<Value> {
         return &self.internal;
     }
 }

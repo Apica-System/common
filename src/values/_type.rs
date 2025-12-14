@@ -1,39 +1,42 @@
-﻿use crate::values::value::{Value, ValueKind};
+﻿use crate::bytecodes::ApicaTypeBytecode;
 
 pub struct ValueType {
-    kind: Option<ValueKind>,
+    kind: Option<ApicaTypeBytecode>,
     contained: Vec<ValueType>,
 }
 
-fn get_kind_repr(kind: &ValueKind) -> &'static str {
+fn get_kind_repr(kind: &ApicaTypeBytecode) -> &'static str {
     return match kind {
-        ValueKind::Null => "null",
-        ValueKind::I8 => "i8",
-        ValueKind::I16 => "i16",
-        ValueKind::I32 => "i32",
-        ValueKind::I64 => "i64",
-        ValueKind::U8 => "u8",
-        ValueKind::U16 => "u16",
-        ValueKind::U32 => "u32",
-        ValueKind::U64 => "u64",
-        ValueKind::F32 => "f32",
-        ValueKind::F64 => "f64",
-        ValueKind::Bool => "bool",
-        ValueKind::Char => "char",
-        ValueKind::String => "string",
-        ValueKind::Error => "error",
-        ValueKind::Type => "type",
-
-        _ => "",
+        ApicaTypeBytecode::Null => "null",
+        ApicaTypeBytecode::Any => "any",
+        ApicaTypeBytecode::I8 => "i8",
+        ApicaTypeBytecode::I16 => "i16",
+        ApicaTypeBytecode::I32 => "i32",
+        ApicaTypeBytecode::I64 => "i64",
+        ApicaTypeBytecode::U8 => "u8",
+        ApicaTypeBytecode::U16 => "u16",
+        ApicaTypeBytecode::U32 => "u32",
+        ApicaTypeBytecode::U64 => "u64",
+        ApicaTypeBytecode::F32 => "f32",
+        ApicaTypeBytecode::F64 => "f64",
+        ApicaTypeBytecode::Bool => "bool",
+        ApicaTypeBytecode::Char => "char",
+        ApicaTypeBytecode::String => "string",
+        ApicaTypeBytecode::Error => "error",
+        ApicaTypeBytecode::Type => "type",
     }
 }
 
-impl Value for ValueType {
-    fn get_kind(&self) -> ValueKind {
-        return ValueKind::Type;
+impl ValueType {
+    pub fn init_empty() -> ValueType {
+        return ValueType { kind: None, contained: vec![] };
     }
 
-    fn show(&self, end: char) {
+    pub fn init_with(kind: ApicaTypeBytecode, contained: Vec<ValueType>) -> ValueType {
+        return ValueType { kind: Some(kind), contained };
+    }
+    
+    pub fn show(&self, end: char) {
         if let Some(kind) = &self.kind {
             let repr = get_kind_repr(kind);
             print!("{repr}");
@@ -53,26 +56,16 @@ impl Value for ValueType {
             print!("null{end}");
         }
     }
-
-    fn is_null(&self) -> bool {
+    
+    pub fn is_null(&self) -> bool {
         return self.kind.is_none();
     }
-
-    fn get_type_representation(&self) -> &str {
+    
+    pub fn get_type_representation(&self) -> &str {
         return "type";
     }
-}
 
-impl ValueType {
-    pub fn init_empty() -> ValueType {
-        return ValueType { kind: None, contained: vec![] };
-    }
-
-    pub fn init_with(kind: ValueKind, contained: Vec<ValueType>) -> ValueType {
-        return ValueType { kind: Some(kind), contained };
-    }
-
-    pub fn get_kind(&self) -> &Option<ValueKind> {
+    pub fn get_kind(&self) -> &Option<ApicaTypeBytecode> {
         return &self.kind;
     }
 
