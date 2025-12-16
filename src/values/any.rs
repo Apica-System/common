@@ -1,4 +1,5 @@
-﻿use crate::values::value::Value;
+﻿use crate::bytecodes::ApicaTypeBytecode;
+use crate::values::value::Value;
 
 pub struct ValueAny {
     internal: Option<Value>,
@@ -38,5 +39,21 @@ impl ValueAny {
     
     pub fn get_value(&self) -> &Option<Value> {
         return &self.internal;
+    }
+
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(val) = &self.internal {
+            return val.convert(to);
+        }
+
+        return None;
+    }
+
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(val) = &self.internal {
+            return val.auto_convert(to);
+        }
+        
+        return None;
     }
 }

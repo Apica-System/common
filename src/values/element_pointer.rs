@@ -1,4 +1,6 @@
-﻿use crate::element::Element;
+﻿use crate::bytecodes::ApicaTypeBytecode;
+use crate::element::Element;
+use crate::values::value::Value;
 
 pub struct ValueElementPointer {
     element: Element,
@@ -25,5 +27,13 @@ impl ValueElementPointer {
     
     pub fn get_value(&self) -> &Element {
         return &self.element;
+    }
+
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        return self.element.get_value().convert(to);
+    }
+
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        return self.element.get_value().auto_convert(to);
     }
 }

@@ -1,4 +1,11 @@
-﻿pub struct ValueError {
+﻿use crate::bytecodes::ApicaTypeBytecode;
+use crate::values::_type::ValueType;
+use crate::values::any::ValueAny;
+use crate::values::bool::ValueBool;
+use crate::values::string::ValueString;
+use crate::values::value::Value;
+
+pub struct ValueError {
     name: Option<String>,
     details: Option<String>,
 }
@@ -38,5 +45,58 @@ impl ValueError {
 
     pub fn get_details(&self) -> &Option<String> {
         return &self.details;
+    }
+    
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        return if let Some(name) = &self.name {
+            match to {
+                ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(true))),
+                
+                ApicaTypeBytecode::String =>
+                    if let Some(details) = &self.details {
+                        Some(Value::String(ValueString::init_with(format!("error<{name}: {details}>"))))
+                    } else {
+                        Some(Value::String(ValueString::init_with(format!("error<{name}>"))))
+                    },
+
+                ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::Error, None))),
+
+                _ => None,
+            }
+        } else {
+            match to {
+                ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_empty())),
+                
+                ApicaTypeBytecode::String => Some(Value::String(ValueString::init_empty())),
+
+                ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::Error, None))),
+
+                _ => None,
+            }
+        }
+    }
+    
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        return if let Some(name) = &self.name {
+            match to {
+                ApicaTypeBytecode::Any => Some(Value::Any(
+                    Box::new(ValueAny::init_with(Value::Error(ValueError::init_with(name.clone(), self.details.clone())))),
+                )),
+                
+                ApicaTypeBytecode::Error => Some(Value::Error(ValueError::init_with(name.clone(), self.details.clone()))),
+                
+                _ => None,
+            }
+        } else {
+            match to {
+                ApicaTypeBytecode::Any => Some(Value::Any(
+                    Box::new(ValueAny::init_empty())
+                )),
+                
+                ApicaTypeBytecode::Error => Some(Value::Error(ValueError::init_empty())),
+                
+                _ => None,
+            }
+        }
     }
 }

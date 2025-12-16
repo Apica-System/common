@@ -1,4 +1,10 @@
-﻿pub struct ValueString {
+﻿use crate::bytecodes::ApicaTypeBytecode;
+use crate::values::_type::ValueType;
+use crate::values::any::ValueAny;
+use crate::values::bool::ValueBool;
+use crate::values::value::Value;
+
+pub struct ValueString {
     value: Option<String>,
 }
 
@@ -33,5 +39,49 @@ impl ValueString {
 
     pub fn get_value(&self) -> &Option<String> {
         return &self.value;
+    }
+    
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        return if let Some(value) = &self.value {
+            match to {
+                ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(!value.is_empty()))),
+                
+                ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::String, None))),
+
+                _ => None,
+            }
+        } else {
+            match to {
+                ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_empty())),
+
+                ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::String, None))),
+
+                _ => None,
+            }
+        }
+    }
+    
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        return if let Some(value) = &self.value {
+            match to {
+                ApicaTypeBytecode::Any => Some(Value::Any(
+                    Box::new(ValueAny::init_with(Value::String(ValueString::init_with(value.clone()))))
+                )),
+                
+                ApicaTypeBytecode::String => Some(Value::String(ValueString::init_with(value.clone()))),
+                
+                _ => None,
+            }
+        } else {
+            match to {
+                ApicaTypeBytecode::Any => Some(Value::Any(
+                    Box::new(ValueAny::init_empty())
+                )),
+                
+                ApicaTypeBytecode::String => Some(Value::String(ValueString::init_empty())),
+                
+                _ => None,
+            }
+        }
     }
 }

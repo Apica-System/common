@@ -44,6 +44,13 @@ pub enum Value {
 }
 
 impl Value {
+    pub fn binary_operation_error(op: &str, left: &str, right: &str) -> Value {
+        return Value::Error(ValueError::init_with(
+            String::from("OperationError"),
+            Some(format!("Unary operator `{op}` is not defined for types <{left}> and <{right}>")),
+        ));
+    }
+
     pub fn get_kind(&self) -> ApicaTypeBytecode {
         return match self { 
             Value::Null(_) => ApicaTypeBytecode::Null,
@@ -154,6 +161,64 @@ impl Value {
             
             Value::Error(error) => error.get_type_representation(),
             Value::Type(t) => t.get_type_representation(),
+        }
+    }
+
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(converted) = self.auto_convert(to) {
+            return Some(converted);
+        }
+
+        return match self {
+            Value::Null(null) => null.convert(to),
+            Value::ElementPointer(element_pointer) => element_pointer.convert(to),
+            Value::Any(any) => any.convert(to),
+
+            Value::I8(i8) => i8.convert(to),
+            Value::I16(i16) => i16.convert(to),
+            Value::I32(i32) => i32.convert(to),
+            Value::I64(i64) => i64.convert(to),
+            Value::U8(u8) => u8.convert(to),
+            Value::U16(u16) => u16.convert(to),
+            Value::U32(u32) => u32.convert(to),
+            Value::U64(u64) => u64.convert(to),
+
+            Value::F32(f32) => f32.convert(to),
+            Value::F64(f64) => f64.convert(to),
+            Value::Bool(bool) => bool.convert(to),
+
+            Value::Char(char) => char.convert(to),
+            Value::String(string) => string.convert(to),
+            
+            Value::Error(error) => error.convert(to),
+            Value::Type(t) => t.convert(to),
+        }
+    }
+
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        return match self {
+            Value::Null(null) => Some(null.auto_convert(to)),
+            Value::ElementPointer(element_pointer) => element_pointer.auto_convert(to),
+            Value::Any(any) => any.auto_convert(to),
+
+            Value::I8(i8) => i8.auto_convert(to),
+            Value::I16(i16) => i16.auto_convert(to),
+            Value::I32(i32) => i32.auto_convert(to),
+            Value::I64(i64) => i64.auto_convert(to),
+            Value::U8(u8) => u8.auto_convert(to),
+            Value::U16(u16) => u16.auto_convert(to),
+            Value::U32(u32) => u32.auto_convert(to),
+            Value::U64(u64) => u64.auto_convert(to),
+
+            Value::F32(f32) => f32.auto_convert(to),
+            Value::F64(f64) => f64.auto_convert(to),
+            Value::Bool(bool) => bool.auto_convert(to),
+
+            Value::Char(char) => char.auto_convert(to),
+            Value::String(string) => string.auto_convert(to),
+            
+            Value::Error(error) => error.auto_convert(to),
+            Value::Type(t) => t.auto_convert(to),
         }
     }
 }
