@@ -1,5 +1,7 @@
-﻿#[repr(u64)]
-#[derive(PartialEq, Debug, Copy, Clone)]
+﻿use num_enum::TryFromPrimitive;
+
+#[repr(u64)]
+#[derive(PartialEq, Debug, Copy, Clone, TryFromPrimitive)]
 pub enum ApicaBytecode {
     EndOfFile =             0x0000_0000,
     EndOfBlock =            0x0000_0001,
@@ -30,7 +32,7 @@ pub enum ApicaBytecode {
 }
 
 #[repr(u64)]
-#[derive(PartialEq, Debug, Copy, Clone)]
+#[derive(PartialEq, Debug, Copy, Clone, TryFromPrimitive)]
 pub enum ApicaTypeBytecode {
     Null =      0x0000_0000,
     Any =       0x0000_0001,
@@ -52,7 +54,7 @@ pub enum ApicaTypeBytecode {
 }
 
 #[repr(u64)]
-#[derive(PartialEq, Debug, Copy, Clone)]
+#[derive(PartialEq, Debug, Copy, Clone, TryFromPrimitive)]
 pub enum ApicaEntrypointBytecode {
     Init =      0x0000_0000,
     Update =    0x0000_0001,
@@ -60,7 +62,7 @@ pub enum ApicaEntrypointBytecode {
 }
 
 #[repr(u64)]
-#[derive(PartialEq, Debug, Copy, Clone)]
+#[derive(PartialEq, Debug, Copy, Clone, TryFromPrimitive)]
 pub enum ApicaBuiltinFunctionBytecode {
     Quit =          0x00000000,
     LogInfo =       0x00000001,
