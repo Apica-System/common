@@ -48,7 +48,7 @@ impl ValueF64 {
         return self.value;
     }
 
-    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Char =>
@@ -74,7 +74,7 @@ impl ValueF64 {
         }
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Any => Some(Value::Any(

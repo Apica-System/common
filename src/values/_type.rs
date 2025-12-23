@@ -98,7 +98,7 @@ impl ValueType {
         };
     }
 
-    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
         return if let Some(_) = &self.kind {
             match to {
                 ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(true))),
@@ -118,7 +118,7 @@ impl ValueType {
         }
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
         return if let Some(kind) = &self.kind {
             match to {
                 ApicaTypeBytecode::Any => Some(Value::Any(

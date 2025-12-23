@@ -38,11 +38,11 @@ impl ValueNull {
         return "null";
     }
 
-    pub fn convert(&self, _: ApicaTypeBytecode) -> Option<Value> {
+    pub fn convert(&'_ self, _: ApicaTypeBytecode) -> Option<Value<'_>> {
         return None; // null is AUTOMATICALLY converted
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Value {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Value<'_> {
         return match to {
             ApicaTypeBytecode::Null => Value::Null(ValueNull::init()),
             ApicaTypeBytecode::Any => Value::Any(Box::new(ValueAny::init_empty())),

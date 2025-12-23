@@ -48,7 +48,7 @@ impl ValueU32 {
         return self.value;
     }
     
-    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::String => Some(Value::String(ValueString::init_with(format!("{value}")))),
@@ -66,7 +66,7 @@ impl ValueU32 {
         }
     }
     
-    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Any => Some(Value::Any(

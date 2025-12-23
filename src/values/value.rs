@@ -18,10 +18,10 @@ use crate::values::u32::ValueU32;
 use crate::values::u64::ValueU64;
 use crate::values::u8::ValueU8;
 
-pub enum Value {
+pub enum Value<'a> {
     Null(ValueNull),
-    ElementPointer(Box<ValueElementPointer>),
-    Any(Box<ValueAny>),
+    ElementPointer(Box<ValueElementPointer<'a>>),
+    Any(Box<ValueAny<'a>>),
     
     I8(ValueI8),
     I16(ValueI16),
@@ -43,15 +43,15 @@ pub enum Value {
     Type(ValueType),
 }
 
-impl Value {
-    pub fn binary_operation_error(op: &str, left: &str, right: &str) -> Value {
+impl<'a> Value<'a> {
+    pub fn binary_operation_error(op: &str, left: &str, right: &str) -> Value<'a> {
         return Value::Error(ValueError::init_with(
             String::from("OperationError"),
             Some(format!("Unary operator `{op}` is not defined for types <{left}> and <{right}>")),
         ));
     }
 
-    pub fn get_kind(&self) -> ApicaTypeBytecode {
+    pub fn get_kind(&'a self) -> ApicaTypeBytecode {
         return match self { 
             Value::Null(_) => ApicaTypeBytecode::Null,
             Value::ElementPointer(element_pointer) => element_pointer.get_value().get_value().get_kind(),
@@ -83,7 +83,7 @@ impl Value {
         }
     }
     
-    pub fn show(&self, end: char) {
+    pub fn show(&'a self, end: char) {
         match self {
             Value::Null(null) => null.show(end),
             Value::ElementPointer(element_pointer) => element_pointer.show(end),
@@ -110,7 +110,7 @@ impl Value {
         }
     }
     
-    pub fn is_null(&self) -> bool {
+    pub fn is_null(&'a self) -> bool {
         return match self {
             Value::Null(null) => null.is_null(),
             Value::ElementPointer(element_pointer) => element_pointer.is_null(),
@@ -137,7 +137,7 @@ impl Value {
         }
     }
     
-    pub fn get_type_representation(&self) -> &str {
+    pub fn get_type_representation(&'a self) -> &'a str {
         return match self {
             Value::Null(null) => null.get_type_representation(),
             Value::ElementPointer(element_pointer) => element_pointer.get_type_representation(),
@@ -164,7 +164,7 @@ impl Value {
         }
     }
 
-    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn convert(&'a self, to: ApicaTypeBytecode) -> Option<Value<'a>> {
         if let Some(converted) = self.auto_convert(to) {
             return Some(converted);
         }
@@ -195,7 +195,7 @@ impl Value {
         }
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn auto_convert(&'a self, to: ApicaTypeBytecode) -> Option<Value<'a>> {
         return match self {
             Value::Null(null) => Some(null.auto_convert(to)),
             Value::ElementPointer(element_pointer) => element_pointer.auto_convert(to),

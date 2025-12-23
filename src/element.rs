@@ -14,17 +14,17 @@ bitflags! {
     }
 }
 
-pub struct Element {
+pub struct Element<'a> {
     modifier: ElementModifier,
-    value: Value,
+    value: Value<'a>,
 }
 
-impl Element {
+impl<'a> Element<'a> {
     pub fn init(modifier: ElementModifier, value: Value) -> Element {
         return Element{modifier, value};
     }
 
-    pub fn get_value(&self) -> &Value {
+    pub fn get_value(&'a self) -> &'a Value<'a> {
         return &self.value;
     }
 
@@ -36,7 +36,7 @@ impl Element {
         self.modifier |= modifier;
     }
 
-    pub fn create_null() -> Element {
+    pub fn create_null() -> Element<'a> {
         return Element{ modifier: ElementModifier::None, value: Value::Null(ValueNull::init()) };
     }
 
@@ -48,7 +48,7 @@ impl Element {
         return self.modifier.contains(ElementModifier::Error) || self.modifier.contains(ElementModifier::Controller);
     }
 
-    pub fn convert(&self, to: ApicaTypeBytecode) -> Element {
+    pub fn convert(&'a self, to: ApicaTypeBytecode) -> Element<'a> {
         if let Some(auto_converted) = self.value.auto_convert(to) {
             return Element::init(ElementModifier::None, auto_converted);
         }
@@ -60,7 +60,7 @@ impl Element {
         }
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Element {
+    pub fn auto_convert(&'a self, to: ApicaTypeBytecode) -> Element<'a> {
         return if let Some(auto_converted) = self.value.auto_convert(to) {
             Element::init(ElementModifier::None, auto_converted)
         } else {

@@ -1,12 +1,12 @@
 ﻿use crate::bytecodes::ApicaTypeBytecode;
 use crate::values::value::Value;
 
-pub struct ValueAny {
-    internal: Option<Value>,
+pub struct ValueAny<'a> {
+    internal: Option<Value<'a>>,
 }
 
-impl ValueAny {
-    pub fn init_empty() -> ValueAny {
+impl<'a> ValueAny<'a> {
+    pub fn init_empty() -> ValueAny<'a> {
         return ValueAny { internal: None };
     }
     
@@ -14,7 +14,7 @@ impl ValueAny {
         return ValueAny { internal: Some(value) };
     }
     
-    pub fn show(&self, end: char) {
+    pub fn show(&'a self, end: char) {
         print!("any<");
         if let Some(val) = &self.internal {
             val.show('\0');
@@ -29,7 +29,7 @@ impl ValueAny {
         return self.internal.is_none();
     }
     
-    pub fn get_type_representation(&self) -> &str {
+    pub fn get_type_representation(&'a self) -> &'a str {
         return if let Some(val) = &self.internal {
             val.get_type_representation()
         } else {
@@ -37,11 +37,11 @@ impl ValueAny {
         }
     }
     
-    pub fn get_value(&self) -> &Option<Value> {
+    pub fn get_value(&self) -> &Option<Value<'a>> {
         return &self.internal;
     }
 
-    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn convert(&'a self, to: ApicaTypeBytecode) -> Option<Value<'a>> {
         if let Some(val) = &self.internal {
             return val.convert(to);
         }
@@ -49,7 +49,7 @@ impl ValueAny {
         return None;
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+    pub fn auto_convert(&'a self, to: ApicaTypeBytecode) -> Option<Value<'a>> {
         if let Some(val) = &self.internal {
             return val.auto_convert(to);
         }
