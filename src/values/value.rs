@@ -1,9 +1,10 @@
 ﻿use crate::bytecodes::ApicaTypeBytecode;
+use crate::context::Context;
 use crate::values::_type::ValueType;
 use crate::values::any::ValueAny;
 use crate::values::bool::ValueBool;
 use crate::values::char::ValueChar;
-use crate::values::element_pointer::ValueElementPointer;
+use crate::values::pointer::ValuePointer;
 use crate::values::error::ValueError;
 use crate::values::f32::ValueF32;
 use crate::values::f64::ValueF64;
@@ -18,11 +19,11 @@ use crate::values::u32::ValueU32;
 use crate::values::u64::ValueU64;
 use crate::values::u8::ValueU8;
 
-pub enum Value<'a> {
+pub enum Value {
     Null(ValueNull),
-    ElementPointer(Box<ValueElementPointer<'a>>),
-    Any(Box<ValueAny<'a>>),
-    
+    Pointer(ValuePointer),
+    Any(Box<ValueAny>),
+
     I8(ValueI8),
     I16(ValueI16),
     I32(ValueI32),
@@ -31,36 +32,31 @@ pub enum Value<'a> {
     U16(ValueU16),
     U32(ValueU32),
     U64(ValueU64),
-    
+
     F32(ValueF32),
     F64(ValueF64),
     Bool(ValueBool),
-    
+
     Char(ValueChar),
     String(ValueString),
-    
+
     Error(ValueError),
     Type(ValueType),
 }
 
-impl<'a> Value<'a> {
-    pub fn binary_operation_error(op: &str, left: &str, right: &str) -> Value<'a> {
+impl Value {
+    pub fn binary_operation_error(op: &str, left: &str, right: &str) -> Value {
         return Value::Error(ValueError::init_with(
             String::from("OperationError"),
             Some(format!("Unary operator `{op}` is not defined for types <{left}> and <{right}>")),
         ));
     }
 
-    pub fn get_kind(&'a self) -> ApicaTypeBytecode {
+    pub fn get_kind(&self, context: &Context) -> ApicaTypeBytecode {
         return match self { 
             Value::Null(_) => ApicaTypeBytecode::Null,
-            Value::ElementPointer(element_pointer) => element_pointer.get_value().get_value().get_kind(),
-            Value::Any(any) => 
-                if let Some(val) = any.get_value() {
-                    val.get_kind()
-                } else {
-                    ApicaTypeBytecode::Null
-                },
+            Value::Pointer(pointer) => pointer.get_kind(context),
+            Value::Any(any) => any.get_kind(context),
             
             Value::I8(_) => ApicaTypeBytecode::I8,
             Value::I16(_) => ApicaTypeBytecode::I16,
@@ -83,11 +79,11 @@ impl<'a> Value<'a> {
         }
     }
     
-    pub fn show(&'a self, end: char) {
+    pub fn show(&self, end: char, context: &Context) {
         match self {
             Value::Null(null) => null.show(end),
-            Value::ElementPointer(element_pointer) => element_pointer.show(end),
-            Value::Any(any) => any.show(end),
+            Value::Pointer(pointer) => pointer.show(end, context),
+            Value::Any(any) => any.show(end, context),
             
             Value::I8(i8) => i8.show(end),
             Value::I16(i16) => i16.show(end),
@@ -110,10 +106,10 @@ impl<'a> Value<'a> {
         }
     }
     
-    pub fn is_null(&'a self) -> bool {
+    pub fn is_null(&self, context: &Context) -> bool {
         return match self {
             Value::Null(null) => null.is_null(),
-            Value::ElementPointer(element_pointer) => element_pointer.is_null(),
+            Value::Pointer(pointer) => pointer.is_null(context),
             Value::Any(any) => any.is_null(),
             
             Value::I8(i8) => i8.is_null(),
@@ -137,11 +133,11 @@ impl<'a> Value<'a> {
         }
     }
     
-    pub fn get_type_representation(&'a self) -> &'a str {
+    pub fn get_type_representation<'a>(&'a self, context: &'a Context) -> &'a str {
         return match self {
             Value::Null(null) => null.get_type_representation(),
-            Value::ElementPointer(element_pointer) => element_pointer.get_type_representation(),
-            Value::Any(any) => any.get_type_representation(),
+            Value::Pointer(pointer) => pointer.get_type_representation(context),
+            Value::Any(any) => any.get_type_representation(context),
             
             Value::I8(i8) => i8.get_type_representation(),
             Value::I16(i16) => i16.get_type_representation(),
@@ -164,15 +160,15 @@ impl<'a> Value<'a> {
         }
     }
 
-    pub fn convert(&'a self, to: ApicaTypeBytecode) -> Option<Value<'a>> {
-        if let Some(converted) = self.auto_convert(to) {
+    pub fn convert(&self, to: ApicaTypeBytecode, context: &Context) -> Option<Value> {
+        if let Some(converted) = self.auto_convert(to, context) {
             return Some(converted);
         }
 
         return match self {
             Value::Null(null) => null.convert(to),
-            Value::ElementPointer(element_pointer) => element_pointer.convert(to),
-            Value::Any(any) => any.convert(to),
+            Value::Pointer(pointer) => pointer.convert(to, context),
+            Value::Any(any) => any.convert(to, context),
 
             Value::I8(i8) => i8.convert(to),
             Value::I16(i16) => i16.convert(to),
@@ -195,11 +191,11 @@ impl<'a> Value<'a> {
         }
     }
 
-    pub fn auto_convert(&'a self, to: ApicaTypeBytecode) -> Option<Value<'a>> {
+    pub fn auto_convert(&self, to: ApicaTypeBytecode, context: &Context) -> Option<Value> {
         return match self {
             Value::Null(null) => Some(null.auto_convert(to)),
-            Value::ElementPointer(element_pointer) => element_pointer.auto_convert(to),
-            Value::Any(any) => any.auto_convert(to),
+            Value::Pointer(pointer) => pointer.auto_convert(to, context),
+            Value::Any(any) => any.auto_convert(to, context),
 
             Value::I8(i8) => i8.auto_convert(to),
             Value::I16(i16) => i16.auto_convert(to),

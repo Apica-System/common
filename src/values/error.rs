@@ -47,7 +47,7 @@ impl ValueError {
         return &self.details;
     }
     
-    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(name) = &self.name {
             match to {
                 ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(true))),
@@ -76,7 +76,7 @@ impl ValueError {
         }
     }
     
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(name) = &self.name {
             match to {
                 ApicaTypeBytecode::Any => Some(Value::Any(

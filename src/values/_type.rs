@@ -98,7 +98,7 @@ impl ValueType {
         };
     }
 
-    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(_) = &self.kind {
             match to {
                 ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(true))),
@@ -118,7 +118,7 @@ impl ValueType {
         }
     }
 
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(kind) = &self.kind {
             match to {
                 ApicaTypeBytecode::Any => Some(Value::Any(
@@ -146,16 +146,18 @@ impl ValueType {
 #[cfg(test)]
 mod tests {
     use crate::bytecodes::ApicaTypeBytecode;
+    use crate::context::Context;
     use crate::values::_type::ValueType;
     use crate::values::value::Value;
 
     #[test]
     fn test_to_string() {
+        let context = Context::init();
         let base_type = Value::Type(ValueType::init_with(ApicaTypeBytecode::Type, Some(vec![
             ValueType::init_with(ApicaTypeBytecode::String, None)
         ])));
 
-        let string_type = base_type.convert(ApicaTypeBytecode::String).unwrap();
+        let string_type = base_type.convert(ApicaTypeBytecode::String, &context).unwrap();
         if let Value::String(str) = &string_type {
             if let Some(value) = &str.get_value() {
                 assert_eq!("type<string>", value);

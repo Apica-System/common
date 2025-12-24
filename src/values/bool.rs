@@ -48,7 +48,7 @@ impl ValueBool {
         return self.value;
     }
 
-    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Char => Some(Value::Char(ValueChar::init_with(*value as u8 as char))),
@@ -68,7 +68,7 @@ impl ValueBool {
         }
     }
 
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Any => Some(Value::Any(

@@ -48,7 +48,7 @@ impl ValueChar {
         return self.value;
     }
 
-    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::F32 => Some(Value::F32(ValueF32::init_with(*value as u32 as f32))),
@@ -74,7 +74,7 @@ impl ValueChar {
         }
     }
 
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value<'_>> {
+    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
         return if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Any => Some(Value::Any(
