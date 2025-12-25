@@ -1,6 +1,5 @@
 ﻿use bitflags::bitflags;
 use crate::bytecodes::ApicaTypeBytecode;
-use crate::context::Context;
 use crate::values::_type::get_kind_repr;
 use crate::values::null::ValueNull;
 use crate::values::value::Value;
@@ -12,6 +11,7 @@ bitflags! {
         const Error =       0b0000_0001;
         const Const =       0b0000_0010;
         const Controller =  0b0000_0100;
+        const Any =         0b0000_1000;
     }
 }
 
@@ -22,19 +22,19 @@ pub struct Element {
 
 impl Element {
     pub fn init(modifier: ElementModifier, value: Value) -> Element {
-        return Element{modifier, value};
+        Element{modifier, value}
     }
 
     pub fn get_value(&self) -> &Value {
-        return &self.value;
+        &self.value
     }
     
     pub fn get_value_mut(&mut self) -> &mut Value {
-        return &mut self.value;
+        &mut self.value
     }
 
     pub fn get_modifier(&self) -> ElementModifier {
-        return self.modifier;
+        self.modifier
     }
 
     pub fn add_modifier(&mut self, modifier: ElementModifier) {
@@ -42,30 +42,30 @@ impl Element {
     }
 
     pub fn create_null() -> Element {
-        return Element{ modifier: ElementModifier::None, value: Value::Null(ValueNull::init()) };
+        Element{ modifier: ElementModifier::None, value: Value::Null(ValueNull::init()) }
     }
 
     pub fn create_error(value: Value) -> Element {
-        return Element{ modifier: ElementModifier::Error, value };
+        Element{ modifier: ElementModifier::Error, value }
     }
 
     pub fn is_error_or_controller(&self) -> bool {
-        return self.modifier.contains(ElementModifier::Error) || self.modifier.contains(ElementModifier::Controller);
+        self.modifier.contains(ElementModifier::Error) || self.modifier.contains(ElementModifier::Controller)
     }
 
-    pub fn convert(&self, to: ApicaTypeBytecode, context: &Context) -> Element {
-        return if let Some(converted) = self.value.convert(to, context) {
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Element {
+        if let Some(converted) = self.value.convert(to) {
             Element::init(ElementModifier::None, converted)
         } else {
-            Element::create_error(Value::binary_operation_error("as", self.value.get_type_representation(context), get_kind_repr(&to)))
+            Element::create_error(Value::binary_operation_error("as", self.value.get_type_representation(), get_kind_repr(&to)))
         }
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode, context: &Context) -> Element {
-        return if let Some(auto_converted) = self.value.auto_convert(to, context) {
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Element {
+        if let Some(auto_converted) = self.value.auto_convert(to) {
             Element::init(ElementModifier::None, auto_converted)
         } else {
-            Element::create_error(Value::binary_operation_error("auto-as", self.value.get_type_representation(context), get_kind_repr(&to)))
+            Element::create_error(Value::binary_operation_error("auto-as", self.value.get_type_representation(), get_kind_repr(&to)))
         }
     }
 }

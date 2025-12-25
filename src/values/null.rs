@@ -1,6 +1,5 @@
 ﻿use crate::bytecodes::ApicaTypeBytecode;
 use crate::values::_type::ValueType;
-use crate::values::any::ValueAny;
 use crate::values::bool::ValueBool;
 use crate::values::char::ValueChar;
 use crate::values::error::ValueError;
@@ -23,7 +22,7 @@ pub struct ValueNull {
 
 impl ValueNull {
     pub fn init() -> ValueNull {
-        return ValueNull{};
+        ValueNull{}
     }
     
     pub fn show(&self, end: char) {
@@ -31,21 +30,20 @@ impl ValueNull {
     }
     
     pub fn is_null(&self) -> bool {
-        return true;
+        true
     }
     
     pub fn get_type_representation(&self) -> &str {
-        return "null";
+        "null"
     }
 
     pub fn convert(&'_ self, _: ApicaTypeBytecode) -> Option<Value> {
-        return None; // null is AUTOMATICALLY converted
+        None // null is AUTOMATICALLY converted
     }
 
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Value {
-        return match to {
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Value {
+        match to {
             ApicaTypeBytecode::Null => Value::Null(ValueNull::init()),
-            ApicaTypeBytecode::Any => Value::Any(Box::new(ValueAny::init_empty())),
             ApicaTypeBytecode::I8 => Value::I8(ValueI8::init_empty()),
             ApicaTypeBytecode::I16 => Value::I16(ValueI16::init_empty()),
             ApicaTypeBytecode::I32 => Value::I32(ValueI32::init_empty()),
@@ -61,6 +59,41 @@ impl ValueNull {
             ApicaTypeBytecode::String => Value::String(ValueString::init_empty()),
             ApicaTypeBytecode::Error => Value::Error(ValueError::init_empty()),
             ApicaTypeBytecode::Type => Value::Type(ValueType::init_empty()),
+
+            _ => panic!("Auto-conversion failed due to an unexpected ApicaTypeBytecode"),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::bytecodes::ApicaTypeBytecode;
+    use crate::values::null::ValueNull;
+    use crate::values::value::Value;
+
+    #[test]
+    fn test_base() {
+        let null = Value::Null(ValueNull::init());
+
+        assert_eq!(true, null.is_null());
+        assert_eq!(ApicaTypeBytecode::Null, null.get_kind());
+        assert_eq!("null", null.get_type_representation());
+    }
+
+    #[test]
+    fn test_auto_convert() {
+        let null = Value::Null(ValueNull::init());
+
+        let to_null = null.auto_convert(ApicaTypeBytecode::Null);
+        assert_eq!(true, to_null.is_some());
+        let to_null_unwrapped = to_null.unwrap();
+        assert_eq!(ApicaTypeBytecode::Null, to_null_unwrapped.get_kind());
+        assert_eq!(true, to_null_unwrapped.is_null());
+
+        let to_i8 = null.auto_convert(ApicaTypeBytecode::I8);
+        assert_eq!(true, to_i8.is_some());
+        let to_i8_unwrapped = to_i8.unwrap();
+        assert_eq!(ApicaTypeBytecode::I8, to_i8_unwrapped.get_kind());
+        assert_eq!(true, to_i8_unwrapped.is_null());
     }
 }

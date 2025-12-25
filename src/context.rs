@@ -7,7 +7,7 @@ pub struct Context {
 
 impl Context {
     pub fn init() -> Context {
-        return Context { scopes: vec![HashMap::new()] };
+        Context { scopes: vec![HashMap::new()] }
     }
 
     pub fn get_element(&self, name: &str, is_global: bool) -> Option<&Element> {
@@ -23,7 +23,7 @@ impl Context {
             }
         }
 
-        return None;
+        None
     }
 
     pub fn get_element_mut(&mut self, name: &str, is_global: bool) -> Option<&mut Element> {
@@ -39,7 +39,7 @@ impl Context {
             }
         }
 
-        return None;
+        None
     }
 
     pub fn set_element(&mut self, name: String, element: Element, is_global: bool) -> bool {
@@ -49,7 +49,7 @@ impl Context {
             self.scopes.last_mut().unwrap()
         };
 
-        return scope.insert(name, element).is_none();
+        scope.insert(name, element).is_none()
     }
 
     pub fn push_scope(&mut self) { 

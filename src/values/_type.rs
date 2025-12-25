@@ -1,17 +1,15 @@
 ﻿use crate::bytecodes::ApicaTypeBytecode;
-use crate::values::any::ValueAny;
 use crate::values::bool::ValueBool;
 use crate::values::string::ValueString;
 use crate::values::value::Value;
 
-#[derive(Clone)]
 pub struct ValueType {
     kind: Option<ApicaTypeBytecode>,
     contained: Option<Vec<ValueType>>,
 }
 
 pub fn get_kind_repr(kind: &ApicaTypeBytecode) -> &'static str {
-    return match kind {
+    match kind {
         ApicaTypeBytecode::Null => "null",
         ApicaTypeBytecode::Any => "any",
         ApicaTypeBytecode::I8 => "i8",
@@ -34,11 +32,11 @@ pub fn get_kind_repr(kind: &ApicaTypeBytecode) -> &'static str {
 
 impl ValueType {
     pub fn init_empty() -> ValueType {
-        return ValueType { kind: None, contained: None };
+        ValueType { kind: None, contained: None }
     }
 
     pub fn init_with(kind: ApicaTypeBytecode, contained: Option<Vec<ValueType>>) -> ValueType {
-        return ValueType { kind: Some(kind), contained };
+        ValueType { kind: Some(kind), contained }
     }
     
     pub fn show(&self, end: char) {
@@ -63,23 +61,23 @@ impl ValueType {
     }
     
     pub fn is_null(&self) -> bool {
-        return self.kind.is_none();
+        self.kind.is_none()
     }
     
     pub fn get_type_representation(&self) -> &str {
-        return "type";
+        "type"
     }
 
     pub fn get_kind(&self) -> &Option<ApicaTypeBytecode> {
-        return &self.kind;
+        &self.kind
     }
 
     pub fn get_contained(&self) -> &Option<Vec<ValueType>> {
-        return &self.contained;
+        &self.contained
     }
 
     fn to_string(&self) -> String {
-        return if let Some(kind) = &self.kind {
+        if let Some(kind) = &self.kind {
             let mut string = format!("{}", get_kind_repr(kind));
             if let Some(contained) = &self.contained {
                 string.push('<');
@@ -95,11 +93,11 @@ impl ValueType {
             string
         } else {
             String::new()
-        };
+        }
     }
 
-    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
-        return if let Some(_) = &self.kind {
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(_) = &self.kind {
             match to {
                 ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(true))),
 
@@ -118,52 +116,19 @@ impl ValueType {
         }
     }
 
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
-        return if let Some(kind) = &self.kind {
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(_) = &self.kind {
             match to {
-                ApicaTypeBytecode::Any => Some(Value::Any(
-                    Box::new(ValueAny::init_with(Value::Type(ValueType::init_with(*kind, self.contained.clone()))))
-                )),
-
                 ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::Type, None))),
 
                 _ => None,
             }
         } else {
             match to {
-                ApicaTypeBytecode::Any => Some(Value::Any(
-                    Box::new(ValueAny::init_empty())
-                )),
-
                 ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::Type, None))),
 
                 _ => None,
             }
-        }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::bytecodes::ApicaTypeBytecode;
-    use crate::context::Context;
-    use crate::values::_type::ValueType;
-    use crate::values::value::Value;
-
-    #[test]
-    fn test_to_string() {
-        let context = Context::init();
-        let base_type = Value::Type(ValueType::init_with(ApicaTypeBytecode::Type, Some(vec![
-            ValueType::init_with(ApicaTypeBytecode::String, None)
-        ])));
-
-        let string_type = base_type.convert(ApicaTypeBytecode::String, &context).unwrap();
-        if let Value::String(str) = &string_type {
-            if let Some(value) = &str.get_value() {
-                assert_eq!("type<string>", value);
-            }
-        } else {
-            panic!("Should be a string");
         }
     }
 }

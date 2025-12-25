@@ -1,10 +1,7 @@
 ﻿use crate::bytecodes::ApicaTypeBytecode;
-use crate::context::Context;
 use crate::values::_type::ValueType;
-use crate::values::any::ValueAny;
 use crate::values::bool::ValueBool;
 use crate::values::char::ValueChar;
-use crate::values::pointer::ValuePointer;
 use crate::values::error::ValueError;
 use crate::values::f32::ValueF32;
 use crate::values::f64::ValueF64;
@@ -21,8 +18,6 @@ use crate::values::u8::ValueU8;
 
 pub enum Value {
     Null(ValueNull),
-    Pointer(ValuePointer),
-    Any(Box<ValueAny>),
 
     I8(ValueI8),
     I16(ValueI16),
@@ -45,18 +40,23 @@ pub enum Value {
 }
 
 impl Value {
-    pub fn binary_operation_error(op: &str, left: &str, right: &str) -> Value {
-        return Value::Error(ValueError::init_with(
+    pub fn unary_operation_error(op: &str, operand: &str) -> Value {
+        Value::Error(ValueError::init_with(
             String::from("OperationError"),
-            Some(format!("Unary operator `{op}` is not defined for types <{left}> and <{right}>")),
-        ));
+            Some(format!("Unary operator `{op}` is not defined for type <{operand}>")),
+        ))
+    }
+    
+    pub fn binary_operation_error(op: &str, left: &str, right: &str) -> Value {
+        Value::Error(ValueError::init_with(
+            String::from("OperationError"),
+            Some(format!("Binary operator `{op}` is not defined for types <{left}> and <{right}>")),
+        ))
     }
 
-    pub fn get_kind(&self, context: &Context) -> ApicaTypeBytecode {
-        return match self { 
+    pub fn get_kind(&self) -> ApicaTypeBytecode {
+        match self { 
             Value::Null(_) => ApicaTypeBytecode::Null,
-            Value::Pointer(pointer) => pointer.get_kind(context),
-            Value::Any(any) => any.get_kind(context),
             
             Value::I8(_) => ApicaTypeBytecode::I8,
             Value::I16(_) => ApicaTypeBytecode::I16,
@@ -79,11 +79,9 @@ impl Value {
         }
     }
     
-    pub fn show(&self, end: char, context: &Context) {
+    pub fn show(&self, end: char) {
         match self {
             Value::Null(null) => null.show(end),
-            Value::Pointer(pointer) => pointer.show(end, context),
-            Value::Any(any) => any.show(end, context),
             
             Value::I8(i8) => i8.show(end),
             Value::I16(i16) => i16.show(end),
@@ -106,11 +104,9 @@ impl Value {
         }
     }
     
-    pub fn is_null(&self, context: &Context) -> bool {
-        return match self {
+    pub fn is_null(&self) -> bool {
+        match self {
             Value::Null(null) => null.is_null(),
-            Value::Pointer(pointer) => pointer.is_null(context),
-            Value::Any(any) => any.is_null(),
             
             Value::I8(i8) => i8.is_null(),
             Value::I16(i16) => i16.is_null(),
@@ -133,11 +129,9 @@ impl Value {
         }
     }
     
-    pub fn get_type_representation<'a>(&'a self, context: &'a Context) -> &'a str {
-        return match self {
+    pub fn get_type_representation(&self) -> &str {
+        match self {
             Value::Null(null) => null.get_type_representation(),
-            Value::Pointer(pointer) => pointer.get_type_representation(context),
-            Value::Any(any) => any.get_type_representation(context),
             
             Value::I8(i8) => i8.get_type_representation(),
             Value::I16(i16) => i16.get_type_representation(),
@@ -160,15 +154,13 @@ impl Value {
         }
     }
 
-    pub fn convert(&self, to: ApicaTypeBytecode, context: &Context) -> Option<Value> {
-        if let Some(converted) = self.auto_convert(to, context) {
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(converted) = self.auto_convert(to) {
             return Some(converted);
         }
 
-        return match self {
+        match self {
             Value::Null(null) => null.convert(to),
-            Value::Pointer(pointer) => pointer.convert(to, context),
-            Value::Any(any) => any.convert(to, context),
 
             Value::I8(i8) => i8.convert(to),
             Value::I16(i16) => i16.convert(to),
@@ -191,11 +183,9 @@ impl Value {
         }
     }
 
-    pub fn auto_convert(&self, to: ApicaTypeBytecode, context: &Context) -> Option<Value> {
-        return match self {
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        match self {
             Value::Null(null) => Some(null.auto_convert(to)),
-            Value::Pointer(pointer) => pointer.auto_convert(to, context),
-            Value::Any(any) => any.auto_convert(to, context),
 
             Value::I8(i8) => i8.auto_convert(to),
             Value::I16(i16) => i16.auto_convert(to),

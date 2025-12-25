@@ -1,6 +1,5 @@
 ﻿use crate::bytecodes::ApicaTypeBytecode;
 use crate::values::_type::ValueType;
-use crate::values::any::ValueAny;
 use crate::values::bool::ValueBool;
 use crate::values::char::ValueChar;
 use crate::values::f32::ValueF32;
@@ -21,11 +20,11 @@ pub struct ValueF64 {
 
 impl ValueF64 {
     pub fn init_empty() -> ValueF64 {
-        return ValueF64 { value: None };
+        ValueF64 { value: None }
     }
 
     pub fn init_with(value: f64) -> ValueF64 {
-        return ValueF64 { value: Some(value) };
+        ValueF64 { value: Some(value) }
     }
 
     pub fn show(&self, end: char) {
@@ -37,19 +36,19 @@ impl ValueF64 {
     }
 
     pub fn is_null(&self) -> bool {
-        return self.value.is_none();
+        self.value.is_none()
     }
 
     pub fn get_type_representation(&self) -> &str {
-        return "f64";
+        "f64"
     }
 
     pub fn get_value(&self) -> Option<f64> {
-        return self.value;
+        self.value
     }
 
-    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
-        return if let Some(value) = &self.value {
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Char =>
                     if let Some(converted) = char::from_u32(*value as u32) {
@@ -74,13 +73,9 @@ impl ValueF64 {
         }
     }
 
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
-        return if let Some(value) = &self.value {
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(value) = &self.value {
             match to {
-                ApicaTypeBytecode::Any => Some(Value::Any(
-                    Box::new(ValueAny::init_with(Value::F64(ValueF64::init_with(*value))))
-                )),
-
                 ApicaTypeBytecode::I8 => Some(Value::I8(ValueI8::init_with(*value as i8))),
                 ApicaTypeBytecode::I16 => Some(Value::I16(ValueI16::init_with(*value as i16))),
                 ApicaTypeBytecode::I32 => Some(Value::I32(ValueI32::init_with(*value as i32))),
@@ -97,10 +92,6 @@ impl ValueF64 {
             }
         } else {
             match to {
-                ApicaTypeBytecode::Any => Some(Value::Any(
-                    Box::new(ValueAny::init_empty())
-                )),
-
                 ApicaTypeBytecode::I8 => Some(Value::I8(ValueI8::init_empty())),
                 ApicaTypeBytecode::I16 => Some(Value::I16(ValueI16::init_empty())),
                 ApicaTypeBytecode::I32 => Some(Value::I32(ValueI32::init_empty())),

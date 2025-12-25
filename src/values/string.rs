@@ -1,6 +1,5 @@
 ﻿use crate::bytecodes::ApicaTypeBytecode;
 use crate::values::_type::ValueType;
-use crate::values::any::ValueAny;
 use crate::values::bool::ValueBool;
 use crate::values::value::Value;
 
@@ -10,11 +9,11 @@ pub struct ValueString {
 
 impl ValueString {
     pub fn init_empty() -> ValueString {
-        return ValueString { value: None };
+        ValueString { value: None }
     }
 
     pub fn init_with(value: String) -> ValueString {
-        return ValueString { value: Some(value) };
+        ValueString { value: Some(value) }
     }
 
     pub fn show(&self, end: char) {
@@ -26,23 +25,19 @@ impl ValueString {
     }
     
     pub fn is_null(&self) -> bool {
-        return self.value.is_none();
+        self.value.is_none()
     }
     
     pub fn get_type_representation(&self) -> &str {
-        return "string";
-    }
-    
-    pub fn init_from(value: &str) -> ValueString {
-        return ValueString { value: Some(String::from(value)) };
+        "string"
     }
 
     pub fn get_value(&self) -> &Option<String> {
-        return &self.value;
+        &self.value
     }
     
-    pub fn convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
-        return if let Some(value) = &self.value {
+    pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(value) = &self.value {
             match to {
                 ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(!value.is_empty()))),
                 
@@ -61,23 +56,15 @@ impl ValueString {
         }
     }
     
-    pub fn auto_convert(&'_ self, to: ApicaTypeBytecode) -> Option<Value> {
-        return if let Some(value) = &self.value {
-            match to {
-                ApicaTypeBytecode::Any => Some(Value::Any(
-                    Box::new(ValueAny::init_with(Value::String(ValueString::init_with(value.clone()))))
-                )),
-                
+    pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
+        if let Some(value) = &self.value {
+            match to {        
                 ApicaTypeBytecode::String => Some(Value::String(ValueString::init_with(value.clone()))),
                 
                 _ => None,
             }
         } else {
             match to {
-                ApicaTypeBytecode::Any => Some(Value::Any(
-                    Box::new(ValueAny::init_empty())
-                )),
-                
                 ApicaTypeBytecode::String => Some(Value::String(ValueString::init_empty())),
                 
                 _ => None,
