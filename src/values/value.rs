@@ -42,6 +42,13 @@ pub enum Value {
 }
 
 impl Value {
+    pub fn null_operation_error(op: &str, is_unary: bool) -> Value {
+        Value::Error(ValueError::init_with(
+            String::from("OperationError"),
+            Some(format!("Cannot perform {} operation `{op}` with a null value", if is_unary { "unary" } else { "binary" }))
+        ))
+    }
+
     pub fn unary_operation_error(op: &str, operand: &str) -> Value {
         Value::Error(ValueError::init_with(
             String::from("OperationError"),
@@ -111,7 +118,7 @@ impl Value {
     pub fn is_null(&self) -> bool {
         match self {
             Value::Null(null) => null.is_null(),
-            Value::Pointer(_) => false,
+            Value::Pointer(pointer) => pointer.is_null(),
             
             Value::I8(i8) => i8.is_null(),
             Value::I16(i16) => i16.is_null(),
@@ -159,10 +166,20 @@ impl Value {
             Value::Type(t) => t.get_type_representation(),
         }
     }
-    
+
     pub fn increment(&mut self) -> Option<Value> {
         match self {
-            
+            Value::I8(i8) => i8.increment(),
+            Value::I16(i16) => i16.increment(),
+            Value::I32(i32) => i32.increment(),
+            Value::I64(i64) => i64.increment(),
+            Value::U8(u8) => u8.increment(),
+            Value::U16(u16) => u16.increment(),
+            Value::U32(u32) => u32.increment(),
+            Value::U64(u64) => u64.increment(),
+            Value::F32(f32) => f32.increment(),
+            Value::F64(f64) => f64.increment(),
+
             _ => None,
         }
     }
@@ -201,7 +218,7 @@ impl Value {
         match self {
             Value::Null(null) => Some(null.auto_convert(to)),
             Value::Pointer(_) => None,
-            
+
             Value::I8(i8) => i8.auto_convert(to),
             Value::I16(i16) => i16.auto_convert(to),
             Value::I32(i32) => i32.auto_convert(to),

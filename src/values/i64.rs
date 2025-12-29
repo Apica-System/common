@@ -47,6 +47,16 @@ impl ValueI64 {
         self.value
     }
 
+    pub fn increment(&mut self) -> Option<Value> {
+        if let Some(value) = self.value.as_mut() {
+            let old_value = Value::I64(ValueI64::init_with(*value));
+            *value += 1;
+            Some(old_value)
+        } else {
+            None
+        }
+    }
+    
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {
             match to {

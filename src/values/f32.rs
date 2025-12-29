@@ -47,6 +47,16 @@ impl ValueF32 {
         self.value
     }
     
+    pub fn increment(&mut self) -> Option<Value> {
+        if let Some(value) = self.value.as_mut() {
+            let old_value = Value::F32(ValueF32::init_with(*value));
+            *value += 1.0;
+            Some(old_value)
+        } else {
+            None
+        }
+    }
+    
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {
             match to {

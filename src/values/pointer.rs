@@ -7,6 +7,10 @@ impl ValuePointer {
         ValuePointer { pointer }
     }
 
+    pub fn is_null(&self) -> bool {
+        true
+    }
+    
     pub fn get_type_representation(&self) -> &str {
         "elt-pointer"
     }

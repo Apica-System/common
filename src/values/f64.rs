@@ -46,6 +46,16 @@ impl ValueF64 {
     pub fn get_value(&self) -> Option<f64> {
         self.value
     }
+    
+    pub fn increment(&mut self) -> Option<Value> {
+        if let Some(value) = self.value.as_mut() {
+            let old_value = Value::F64(ValueF64::init_with(*value));
+            *value += 1.0;
+            Some(old_value)
+        } else {
+            None
+        }
+    }
 
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {
