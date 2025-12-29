@@ -53,6 +53,14 @@ impl Element {
         self.modifier.contains(ElementModifier::Error) || self.modifier.contains(ElementModifier::Controller)
     }
 
+    pub fn increment(&mut self) -> Element {
+        if let Some(incremented) = self.value.increment() {
+            Element::init(ElementModifier::None, incremented)
+        } else {
+            Element::create_error(Value::unary_operation_error("right ++", self.value.get_type_representation()))
+        }
+    }
+
     pub fn convert(&self, to: ApicaTypeBytecode) -> Element {
         if let Some(converted) = self.value.convert(to) {
             Element::init(ElementModifier::None, converted)

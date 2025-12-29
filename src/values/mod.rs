@@ -15,3 +15,4 @@ pub mod char;
 pub mod string;
 pub mod error;
 pub mod _type;
+pub mod pointer;

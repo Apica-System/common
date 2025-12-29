@@ -10,6 +10,7 @@ use crate::values::i32::ValueI32;
 use crate::values::i64::ValueI64;
 use crate::values::i8::ValueI8;
 use crate::values::null::ValueNull;
+use crate::values::pointer::ValuePointer;
 use crate::values::string::ValueString;
 use crate::values::u16::ValueU16;
 use crate::values::u32::ValueU32;
@@ -18,6 +19,7 @@ use crate::values::u8::ValueU8;
 
 pub enum Value {
     Null(ValueNull),
+    Pointer(ValuePointer),
 
     I8(ValueI8),
     I16(ValueI16),
@@ -57,6 +59,7 @@ impl Value {
     pub fn get_kind(&self) -> ApicaTypeBytecode {
         match self { 
             Value::Null(_) => ApicaTypeBytecode::Null,
+            Value::Pointer(_) => ApicaTypeBytecode::Null,
             
             Value::I8(_) => ApicaTypeBytecode::I8,
             Value::I16(_) => ApicaTypeBytecode::I16,
@@ -82,6 +85,7 @@ impl Value {
     pub fn show(&self, end: char) {
         match self {
             Value::Null(null) => null.show(end),
+            Value::Pointer(_) => {},
             
             Value::I8(i8) => i8.show(end),
             Value::I16(i16) => i16.show(end),
@@ -107,6 +111,7 @@ impl Value {
     pub fn is_null(&self) -> bool {
         match self {
             Value::Null(null) => null.is_null(),
+            Value::Pointer(_) => false,
             
             Value::I8(i8) => i8.is_null(),
             Value::I16(i16) => i16.is_null(),
@@ -132,6 +137,7 @@ impl Value {
     pub fn get_type_representation(&self) -> &str {
         match self {
             Value::Null(null) => null.get_type_representation(),
+            Value::Pointer(pointer) => pointer.get_type_representation(),
             
             Value::I8(i8) => i8.get_type_representation(),
             Value::I16(i16) => i16.get_type_representation(),
@@ -153,6 +159,13 @@ impl Value {
             Value::Type(t) => t.get_type_representation(),
         }
     }
+    
+    pub fn increment(&mut self) -> Option<Value> {
+        match self {
+            
+            _ => None,
+        }
+    }
 
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(converted) = self.auto_convert(to) {
@@ -161,6 +174,7 @@ impl Value {
 
         match self {
             Value::Null(null) => null.convert(to),
+            Value::Pointer(_) => None,
 
             Value::I8(i8) => i8.convert(to),
             Value::I16(i16) => i16.convert(to),
@@ -186,7 +200,8 @@ impl Value {
     pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         match self {
             Value::Null(null) => Some(null.auto_convert(to)),
-
+            Value::Pointer(_) => None,
+            
             Value::I8(i8) => i8.auto_convert(to),
             Value::I16(i16) => i16.auto_convert(to),
             Value::I32(i32) => i32.auto_convert(to),
