@@ -96,6 +96,10 @@ impl ValueType {
         }
     }
 
+    pub fn not(&self) -> Value {
+        Value::Bool(ValueBool::init_with(!self.is_null()))
+    }
+    
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(_) = &self.kind {
             match to {

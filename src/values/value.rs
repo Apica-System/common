@@ -183,6 +183,49 @@ impl Value {
             _ => None,
         }
     }
+    
+    pub fn decrement(&mut self) -> Option<Value> {
+        match self {
+            Value::I8(i8) => i8.decrement(),
+            Value::I16(i16) => i16.decrement(),
+            Value::I32(i32) => i32.decrement(),
+            Value::I64(i64) => i64.decrement(),
+            Value::U8(u8) => u8.decrement(),
+            Value::U16(u16) => u16.decrement(),
+            Value::U32(u32) => u32.decrement(),
+            Value::U64(u64) => u64.decrement(),
+            Value::F32(f32) => f32.decrement(),
+            Value::F64(f64) => f64.decrement(),
+            
+            _ => None,
+        }
+    }
+    
+    pub fn not(&self) -> Value {
+        match self {
+            Value::Null(null) => null.not(),
+            Value::Pointer(pointer) => pointer.not(),
+            
+            Value::I8(i8) => i8.not(),
+            Value::I16(i16) => i16.not(),
+            Value::I32(i32) => i32.not(),
+            Value::I64(i64) => i64.not(),
+            Value::U8(u8) => u8.not(),
+            Value::U16(u16) => u16.not(),
+            Value::U32(u32) => u32.not(),
+            Value::U64(u64) => u64.not(),
+            
+            Value::F32(f32) => f32.not(),
+            Value::F64(f64) => f64.not(),
+            Value::Bool(bool) => bool.not(),
+            
+            Value::Char(char) => char.not(),
+            Value::String(string) => string.not(),
+            
+            Value::Error(error) => error.not(),
+            Value::Type(t) => t.not(),
+        }
+    }
 
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(converted) = self.auto_convert(to) {

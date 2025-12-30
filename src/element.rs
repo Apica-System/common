@@ -69,6 +69,18 @@ impl Element {
         }
     }
 
+    pub fn decrement(&mut self) -> Element {
+        if let Some(decremented) = self.value.decrement() {
+            Element::init(ElementModifier::None, decremented)
+        } else {
+            Element::create_error(Value::unary_operation_error("right --", self.value.get_type_representation()))
+        }
+    }
+
+    pub fn not(&mut self) -> Element {
+        Element::init(ElementModifier::None, self.value.not())
+    }
+
     pub fn convert(&self, to: ApicaTypeBytecode) -> Element {
         if let Some(converted) = self.value.convert(to) {
             Element::init(ElementModifier::None, converted)

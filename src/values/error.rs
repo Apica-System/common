@@ -46,6 +46,14 @@ impl ValueError {
         &self.details
     }
     
+    pub fn not(&self) -> Value {
+        let value = match &self.name {
+            Some(v) => !v.is_empty(),
+            None => true,
+        };
+        Value::Bool(ValueBool::init_with(value))
+    }
+    
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(name) = &self.name {
             match to {

@@ -56,6 +56,24 @@ impl ValueU16 {
             None
         }
     }
+    
+    pub fn decrement(&mut self) -> Option<Value> {
+        if let Some(value) = self.value.as_mut() {
+            let old_value = Value::U16(ValueU16::init_with(*value));
+            *value -= 1;
+            Some(old_value)
+        } else {
+            None
+        }
+    }
+
+    pub fn not(&self) -> Value {
+        let value = match self.value {
+            Some(v) => v != 0,
+            None => true,
+        };
+        Value::Bool(ValueBool::init_with(value))
+    }
 
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {

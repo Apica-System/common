@@ -40,6 +40,10 @@ impl ValueNull {
     pub fn convert(&'_ self, _: ApicaTypeBytecode) -> Option<Value> {
         None // null is AUTOMATICALLY converted
     }
+    
+    pub fn not(&self) -> Value {
+        Value::Bool(ValueBool::init_with(true))
+    }
 
     pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Value {
         match to {

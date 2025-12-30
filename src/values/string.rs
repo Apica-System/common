@@ -36,6 +36,14 @@ impl ValueString {
         &self.value
     }
     
+    pub fn not(&self) -> Value {
+        let value = match &self.value {
+            Some(v) => !v.is_empty(),
+            None => true,
+        };
+        Value::Bool(ValueBool::init_with(value))
+    }
+    
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {
             match to {

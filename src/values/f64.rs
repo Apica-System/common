@@ -56,6 +56,24 @@ impl ValueF64 {
             None
         }
     }
+    
+    pub fn decrement(&mut self) -> Option<Value> {
+        if let Some(value) = self.value.as_mut() {
+            let old_value = Value::F64(ValueF64::init_with(*value));
+            *value -= 1.0;
+            Some(old_value)
+        } else {
+            None
+        }
+    }
+
+    pub fn not(&self) -> Value {
+        let value = match self.value {
+            Some(v) => v != 0.0,
+            None => true,
+        };
+        Value::Bool(ValueBool::init_with(value))
+    }
 
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {

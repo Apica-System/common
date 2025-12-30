@@ -47,6 +47,11 @@ impl ValueBool {
         self.value
     }
 
+    pub fn not(&self) -> Value {
+        let value = self.get_value().unwrap_or_else(|| true);
+        Value::Bool(ValueBool::init_with(value))
+    }
+    
     pub fn convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {
             match to {
