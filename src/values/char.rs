@@ -47,6 +47,35 @@ impl ValueChar {
         self.value
     }
 
+    pub fn from_u32(value: u32) -> Value {
+        if let Some(character) = char::from_u32(value) {
+            Value::Char(ValueChar::init_with(character))
+        } else {
+            Value::Char(ValueChar::init_with('�'))
+        }
+    }
+
+    pub fn add(&self, other: &Value) -> Option<Value> {
+        match other {
+            Value::I8(i8) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + i8.get_value().unwrap() as u32)),
+            Value::I16(i16) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + i16.get_value().unwrap() as u32)),
+            Value::I32(i32) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + i32.get_value().unwrap() as u32)),
+            Value::I64(i64) => Some(Value::I64(ValueI64::init_with(self.value.unwrap() as i64 + i64.get_value().unwrap()))),
+            Value::U8(u8) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + u8.get_value().unwrap() as u32)),
+            Value::U16(u16) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + u16.get_value().unwrap() as u32)),
+            Value::U32(u32) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + u32.get_value().unwrap())),
+            Value::U64(u64) => Some(Value::U64(ValueU64::init_with(self.value.unwrap() as u64 + u64.get_value().unwrap()))),
+
+            Value::F32(f32) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() as u32 as f32 + f32.get_value().unwrap()))),
+            Value::F64(f64) => Some(Value::F64(ValueF64::init_with(self.value.unwrap() as u32 as f64 + f64.get_value().unwrap()))),
+            Value::Bool(bool) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + if bool.get_value().unwrap() { 1 } else { 0 })),
+
+            Value::Char(char) => Some(ValueChar::from_u32(self.value.unwrap() as u32 + char.get_value().unwrap() as u32)),
+
+            _ => None,
+        }
+    }
+
     pub fn not(&self) -> Value {
         let value = match self.value {
             Some(value) => value != '\0',

@@ -3,11 +3,12 @@ use crate::values::value::Value;
 
 pub struct ValuePointer {
     pointer: String,
+    is_global: bool,
 }
 
 impl ValuePointer {
-    pub fn init_with(pointer: String) -> ValuePointer {
-        ValuePointer { pointer }
+    pub fn init_with(pointer: String, is_global: bool) -> ValuePointer {
+        ValuePointer { pointer, is_global }
     }
 
     pub fn is_null(&self) -> bool {
@@ -20,6 +21,10 @@ impl ValuePointer {
 
     pub fn get_pointer(&self) -> &str {
         &self.pointer
+    }
+    
+    pub fn is_global(&self) -> bool {
+        self.is_global
     }
     
     pub fn not(&self) -> Value {

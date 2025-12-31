@@ -167,6 +167,28 @@ impl Value {
         }
     }
 
+    pub fn add(&self, other: &Value) -> Option<Value> {
+        match self {
+            Value::I8(i8) => i8.add(other),
+            Value::I16(i16) => i16.add(other),
+            Value::I32(i32) => i32.add(other),
+            Value::I64(i64) => i64.add(other),
+            Value::U8(u8) => u8.add(other),
+            Value::U16(u16) => u16.add(other),
+            Value::U32(u32) => u32.add(other),
+            Value::U64(u64) => u64.add(other),
+            
+            Value::F32(f32) => f32.add(other),
+            Value::F64(f64) => f64.add(other),
+            Value::Bool(bool) => bool.add(other),
+
+            Value::Char(char) => char.add(other),
+            Value::String(string) => string.add(other),
+
+            _ => None,
+        }
+    }
+
     pub fn increment(&mut self) -> Option<Value> {
         match self {
             Value::I8(i8) => i8.increment(),

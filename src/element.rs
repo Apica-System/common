@@ -60,8 +60,24 @@ impl Element {
             self.auto_convert(to)
         }
     }
+    
+    pub fn add(&self, other: &Element) -> Element {
+        if self.value.is_null() || other.value.is_null() {
+            return Element::create_error(Value::null_operation_error("+", false));
+        }
+        
+        if let Some(added) = self.value.add(other.get_value()) {
+            Element::init(ElementModifier::None, added)
+        } else {
+            Element::create_error(Value::binary_operation_error("+", self.value.get_type_representation(), other.value.get_type_representation()))
+        }
+    }
 
     pub fn increment(&mut self) -> Element {
+        if self.value.is_null() {
+            return Element::create_error(Value::null_operation_error("right ++", true));
+        }
+        
         if let Some(incremented) = self.value.increment() {
             Element::init(ElementModifier::None, incremented)
         } else {
@@ -70,6 +86,10 @@ impl Element {
     }
 
     pub fn decrement(&mut self) -> Element {
+        if self.value.is_null() {
+            return Element::create_error(Value::null_operation_error("right --", true));
+        }
+        
         if let Some(decremented) = self.value.decrement() {
             Element::init(ElementModifier::None, decremented)
         } else {

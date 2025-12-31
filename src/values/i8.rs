@@ -47,6 +47,27 @@ impl ValueI8 {
         self.value
     }
 
+    pub fn add(&self, other: &Value) -> Option<Value> {
+        match other {
+            Value::I8(i8) => Some(Value::I8(ValueI8::init_with(self.value.unwrap() + i8.get_value().unwrap()))),
+            Value::I16(i16) => Some(Value::I16(ValueI16::init_with(self.value.unwrap() as i16 + i16.get_value().unwrap()))),
+            Value::I32(i32) => Some(Value::I32(ValueI32::init_with(self.value.unwrap() as i32 + i32.get_value().unwrap()))),
+            Value::I64(i64) => Some(Value::I64(ValueI64::init_with(self.value.unwrap() as i64 + i64.get_value().unwrap()))),
+            Value::U8(u8) => Some(Value::I8(ValueI8::init_with(self.value.unwrap() + u8.get_value().unwrap() as i8))),
+            Value::U16(u16) => Some(Value::I16(ValueI16::init_with(self.value.unwrap() as i16 + u16.get_value().unwrap() as i16))),
+            Value::U32(u32) => Some(Value::I32(ValueI32::init_with(self.value.unwrap() as i32 + u32.get_value().unwrap() as i32))),
+            Value::U64(u64) => Some(Value::I64(ValueI64::init_with(self.value.unwrap() as i64 + u64.get_value().unwrap() as i64))),
+
+            Value::F32(f32) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() as f32 + f32.get_value().unwrap()))),
+            Value::F64(f64) => Some(Value::F64(ValueF64::init_with(self.value.unwrap() as f64 + f64.get_value().unwrap()))),
+            Value::Bool(bool) => Some(Value::I8(ValueI8::init_with(self.value.unwrap() + if bool.get_value().unwrap() { 1 } else { 0 }))),
+
+            Value::Char(char) => Some(Value::I32(ValueI32::init_with(self.value.unwrap() as i32 + char.get_value().unwrap() as i32))),
+
+            _ => None,
+        }
+    }
+
     pub fn increment(&mut self) -> Option<Value> {
         if let Some(value) = self.value.as_mut() {
             let old_value = Value::I8(ValueI8::init_with(*value));

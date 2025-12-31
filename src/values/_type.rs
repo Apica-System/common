@@ -76,7 +76,7 @@ impl ValueType {
         &self.contained
     }
 
-    fn to_string(&self) -> String {
+    pub fn to_string(&self) -> String {
         if let Some(kind) = &self.kind {
             let mut string = format!("{}", get_kind_repr(kind));
             if let Some(contained) = &self.contained {

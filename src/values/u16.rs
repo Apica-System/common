@@ -46,6 +46,27 @@ impl ValueU16 {
     pub fn get_value(&self) -> Option<u16> {
         self.value
     }
+
+    pub fn add(&self, other: &Value) -> Option<Value> {
+        match other {
+            Value::I8(i8) => Some(Value::I16(ValueI16::init_with(self.value.unwrap() as i16 + i8.get_value().unwrap() as i16))),
+            Value::I16(i16) => Some(Value::I16(ValueI16::init_with(self.value.unwrap() as i16 + i16.get_value().unwrap()))),
+            Value::I32(i32) => Some(Value::I32(ValueI32::init_with(self.value.unwrap() as i32 + i32.get_value().unwrap()))),
+            Value::I64(i64) => Some(Value::I64(ValueI64::init_with(self.value.unwrap() as i64 + i64.get_value().unwrap()))),
+            Value::U8(u8) => Some(Value::U16(ValueU16::init_with(self.value.unwrap() + u8.get_value().unwrap() as u16))),
+            Value::U16(u16) => Some(Value::U16(ValueU16::init_with(self.value.unwrap() + u16.get_value().unwrap()))),
+            Value::U32(u32) => Some(Value::U32(ValueU32::init_with(self.value.unwrap() as u32 + u32.get_value().unwrap()))),
+            Value::U64(u64) => Some(Value::U64(ValueU64::init_with(self.value.unwrap() as u64 + u64.get_value().unwrap()))),
+
+            Value::F32(f32) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() as f32 + f32.get_value().unwrap()))),
+            Value::F64(f64) => Some(Value::F64(ValueF64::init_with(self.value.unwrap() as f64 + f64.get_value().unwrap()))),
+            Value::Bool(bool) => Some(Value::U16(ValueU16::init_with(self.value.unwrap() + if bool.get_value().unwrap() { 1 } else { 0 }))),
+
+            Value::Char(char) => Some(Value::U32(ValueU32::init_with(self.value.unwrap() as u32 + char.get_value().unwrap() as u32))),
+
+            _ => None,
+        }
+    }
     
     pub fn increment(&mut self) -> Option<Value> {
         if let Some(value) = self.value.as_mut() {
@@ -107,12 +128,7 @@ impl ValueU16 {
                 ApicaTypeBytecode::F32 => Some(Value::F32(ValueF32::init_with(*value as f32))),
                 ApicaTypeBytecode::F64 => Some(Value::F64(ValueF64::init_with(*value as f64))),
                 ApicaTypeBytecode::Bool => Some(Value::Bool(ValueBool::init_with(*value != 0))),
-                ApicaTypeBytecode::Char =>
-                    if let Some(converted) = char::from_u32(*value as u32) {
-                        Some(Value::Char(ValueChar::init_with(converted)))
-                    } else {
-                        Some(Value::Char(ValueChar::init_with('�')))
-                    },
+                ApicaTypeBytecode::Char => Some(ValueChar::from_u32(*value as u32)),
                 
                 _ => None,
             }

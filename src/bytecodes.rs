@@ -14,7 +14,7 @@ pub enum ApicaBytecode {
     VarDecl =               0x0000_0008,
     ConstDecl =             0x0000_0009,
     Add =                   0x0000_000A,
-    Substract =             0x0000_000B,
+    Subtract =              0x0000_000B,
     Assign =                0x0000_000C,
     Increment =             0x0000_000D,
     Decrement =             0x0000_000E,
