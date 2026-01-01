@@ -54,6 +54,10 @@ impl Element {
     }
 
     pub fn check_convert(self, to: ApicaTypeBytecode) -> Element {
+        if self.is_error_or_controller() {
+            return self;
+        }
+
         if self.get_value().get_kind() == to {
             self
         } else {
