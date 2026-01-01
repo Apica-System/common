@@ -78,7 +78,7 @@ impl ValueChar {
 
     pub fn not(&self) -> Value {
         let value = match self.value {
-            Some(value) => value != '\0',
+            Some(value) => value == '\0',
             None => true,
         };
         Value::Bool(ValueBool::init_with(value))

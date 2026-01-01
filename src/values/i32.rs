@@ -90,7 +90,7 @@ impl ValueI32 {
 
     pub fn not(&self) -> Value {
         let value = match self.value {
-            Some(v) => v != 0,
+            Some(v) => v == 0,
             None => true,
         };
         Value::Bool(ValueBool::init_with(value))

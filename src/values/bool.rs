@@ -69,7 +69,10 @@ impl ValueBool {
     }
     
     pub fn not(&self) -> Value {
-        let value = self.get_value().unwrap_or_else(|| true);
+        let value = match self.value {
+            Some(value) => !value,
+            None => false,
+        };
         Value::Bool(ValueBool::init_with(value))
     }
     

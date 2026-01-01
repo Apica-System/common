@@ -69,7 +69,7 @@ impl ValueString {
 
     pub fn not(&self) -> Value {
         let value = match &self.value {
-            Some(v) => !v.is_empty(),
+            Some(v) => v.is_empty(),
             None => true,
         };
         Value::Bool(ValueBool::init_with(value))

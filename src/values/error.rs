@@ -48,7 +48,7 @@ impl ValueError {
     
     pub fn not(&self) -> Value {
         let value = match &self.name {
-            Some(v) => !v.is_empty(),
+            Some(v) => v.is_empty(),
             None => true,
         };
         Value::Bool(ValueBool::init_with(value))
