@@ -74,7 +74,7 @@ impl ValueF32 {
             *value += 1.0;
             Some(old_value)
         } else {
-            None
+            unreachable!()
         }
     }
     
@@ -84,7 +84,7 @@ impl ValueF32 {
             *value -= 1.0;
             Some(old_value)
         } else {
-            None
+            unreachable!()
         }
     }
     
@@ -156,5 +156,115 @@ impl ValueF32 {
                 _ => None,
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::values::char::ValueChar;
+    use crate::values::f32::ValueF32;
+    use crate::values::i16::ValueI16;
+    use crate::values::string::ValueString;
+    use crate::values::u64::ValueU64;
+    use crate::values::value::Value;
+
+    #[test]
+    fn test_empty() {
+        let mut f32 = ValueF32::init_empty();
+        assert!(f32.is_null());
+
+        f32 = ValueF32::init_with(12.0);
+        assert!(!f32.is_null());
+    }
+
+    #[test]
+    fn test_type_repr() {
+        let f32 = ValueF32::init_empty();
+        assert_eq!("f32", f32.get_type_representation());
+    }
+
+    #[test]
+    fn test_get_value() {
+        let mut f32 = ValueF32::init_empty();
+        assert!(f32.get_value().is_none());
+
+        f32 = ValueF32::init_with(12.0);
+        assert_eq!(12.0, f32.get_value().unwrap());
+    }
+
+    #[test]
+    fn test_add() {
+        let f32 = ValueF32::init_with(12.0);
+
+        let i16 = Value::I16(ValueI16::init_with(-12));
+        let mut result = f32.add(&i16);
+        if let Value::F32(i16_result) = &result.unwrap() {
+            assert_eq!(0.0, i16_result.get_value().unwrap());
+        } else { panic!(); }
+
+        let u64 = Value::U64(ValueU64::init_with(10));
+        result = f32.add(&u64);
+        if let Value::F64(u64_result) = &result.unwrap() {
+            assert_eq!(22.0, u64_result.get_value().unwrap());
+        } else { panic!(); }
+
+        let other_f32 = Value::F32(ValueF32::init_with(-12.0));
+        result = f32.add(&other_f32);
+        if let Value::F32(float_result) = &result.unwrap() {
+            assert_eq!(0.0, float_result.get_value().unwrap());
+        } else { panic!(); }
+
+        let char = Value::Char(ValueChar::init_with('a'));
+        result = f32.add(&char);
+        if let Value::F32(char_result) = &result.unwrap() {
+            assert_eq!(109.0, char_result.get_value().unwrap());
+        } else { panic!(); }
+
+        let string = Value::String(ValueString::init_with(String::new()));
+        result = f32.add(&string);
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_increment() {
+        let mut f32 = ValueF32::init_with(12.0);
+        let result = f32.increment();
+        if let Value::F32(v) = &result.unwrap() {
+            assert_eq!(12.0, v.get_value().unwrap());
+        } else { panic!(); }
+
+        assert_eq!(13.0, f32.get_value().unwrap());
+    }
+
+    #[test]
+    fn test_decrement() {
+        let mut f32 = ValueF32::init_with(12.0);
+        let result = f32.decrement();
+        if let Value::F32(v) = &result.unwrap() {
+            assert_eq!(12.0, v.get_value().unwrap());
+        }
+
+        assert_eq!(11.0, f32.get_value().unwrap());
+    }
+
+    #[test]
+    fn test_not() {
+        let mut f32 = ValueF32::init_empty();
+        let mut result = f32.not();
+        if let Value::Bool(bool_result) = &result {
+            assert_eq!(true, bool_result.get_value().unwrap());
+        } else { panic!(); }
+
+        f32 = ValueF32::init_with(0.0);
+        result = f32.not();
+        if let Value::Bool(bool_result) = &result {
+            assert_eq!(true, bool_result.get_value().unwrap());
+        } else { panic!(); }
+
+        f32 = ValueF32::init_with(1.0);
+        result = f32.not();
+        if let Value::Bool(bool_result) = &result {
+            assert_eq!(false, bool_result.get_value().unwrap());
+        } else { panic!(); }
     }
 }

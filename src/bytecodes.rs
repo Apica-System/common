@@ -80,3 +80,49 @@ pub enum ApicaBuiltinFunctionBytecode {
     IsKeyJustPressed =  0x0000000D,
     IsKeyPressed =      0x0000000E,
 }
+
+#[cfg(test)]
+mod tests {
+    use num_enum::TryFromPrimitive;
+    use crate::bytecodes::{ApicaBuiltinFunctionBytecode, ApicaBytecode, ApicaEntrypointBytecode, ApicaTypeBytecode};
+
+    #[test]
+    fn test_bytecode_from() {
+        let mut bytecode = ApicaBytecode::try_from_primitive(0xffffffff);
+        assert!(bytecode.is_err());
+
+        bytecode = ApicaBytecode::try_from_primitive(0);
+        assert!(bytecode.is_ok());
+        assert_eq!(bytecode.unwrap(), ApicaBytecode::EndOfFile);
+    }
+
+    #[test]
+    fn test_type_bytecode_from() {
+        let mut type_bytecode = ApicaTypeBytecode::try_from_primitive(0xffffffff);
+        assert!(type_bytecode.is_err());
+
+        type_bytecode = ApicaTypeBytecode::try_from_primitive(0);
+        assert!(type_bytecode.is_ok());
+        assert_eq!(type_bytecode.unwrap(), ApicaTypeBytecode::Null);
+    }
+
+    #[test]
+    fn test_entry_bytecode_from() {
+        let mut entry_bytecode = ApicaEntrypointBytecode::try_from_primitive(0xffffffff);
+        assert!(entry_bytecode.is_err());
+
+        entry_bytecode = ApicaEntrypointBytecode::try_from_primitive(0);
+        assert!(entry_bytecode.is_ok());
+        assert_eq!(entry_bytecode.unwrap(), ApicaEntrypointBytecode::Init);
+    }
+
+    #[test]
+    fn test_builtin_func_bytecode_from() {
+        let mut builtin_func_bytecode = ApicaBuiltinFunctionBytecode::try_from_primitive(0xffffffff);
+        assert!(builtin_func_bytecode.is_err());
+
+        builtin_func_bytecode = ApicaBuiltinFunctionBytecode::try_from_primitive(0);
+        assert!(builtin_func_bytecode.is_ok());
+        assert_eq!(builtin_func_bytecode.unwrap(), ApicaBuiltinFunctionBytecode::Quit);
+    }
+}

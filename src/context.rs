@@ -42,6 +42,16 @@ impl Context {
         None
     }
 
+    pub fn delete_element(&mut self, name: &str, is_global: bool) -> bool {
+        let scope = if is_global {
+            self.scopes.first_mut().unwrap()
+        } else {
+            self.scopes.last_mut().unwrap()
+        };
+
+        scope.remove(name).is_some()
+    }
+
     pub fn set_element(&mut self, name: String, element: Element, is_global: bool) -> bool {
         let scope = if is_global {
             self.scopes.first_mut().unwrap()
@@ -60,5 +70,55 @@ impl Context {
         if self.scopes.len() > 1 {
             self.scopes.pop();
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::context::Context;
+    use crate::element::{Element, ElementModifier};
+    use crate::values::u32::ValueU32;
+    use crate::values::value::Value;
+
+    #[test]
+    fn test_context() {
+        let var_name = "a";
+
+        let mut context = Context::init();
+        assert_eq!(context.scopes.len(), 1);
+        assert!(context.get_element(var_name, false).is_none());
+
+        assert!(context.set_element(
+            String::from(var_name),
+            Element::init(ElementModifier::None, Value::U32(ValueU32::init_with(23))),
+            false,
+        ));
+
+        let mut var_a = context.get_element(var_name, false);
+        assert!(var_a.is_some());
+
+        assert!(context.delete_element(var_name, false));
+
+        var_a = context.get_element(var_name, false);
+        assert!(var_a.is_none());
+
+        context.push_scope();
+        assert!(context.set_element(
+            String::from(var_name),
+            Element::init(ElementModifier::None, Value::U32(ValueU32::init_with(23))),
+            false,
+        ));
+
+        var_a = context.get_element(var_name, true);
+        assert!(var_a.is_none());
+
+        assert!(context.set_element(
+            String::from(var_name),
+            Element::init(ElementModifier::None, Value::U32(ValueU32::init_with(23))),
+            true
+        ));
+
+        var_a = context.get_element(var_name, true);
+        assert!(var_a.is_some());
     }
 }
