@@ -90,6 +90,7 @@ pub enum ApicaSpecificationBytecode {
     LoggerActivation =      0x0000_0003,
     WindowWidth =           0x0000_0004,
     WindowHeight =          0x0000_0005,
+    Version =               0x0000_0006,
 }
 
 #[cfg(test)]
