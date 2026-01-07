@@ -64,27 +64,38 @@ pub enum ApicaEntrypointBytecode {
 #[repr(u64)]
 #[derive(PartialEq, Debug, Copy, Clone, TryFromPrimitive)]
 pub enum ApicaBuiltinFunctionBytecode {
-    Quit =              0x00000000,
-    LogInfo =           0x00000001,
-    LognInfo =          0x00000002,
-    LogSuccess =        0x00000003,
-    LognSuccess =       0x00000004,
-    LogWarning =        0x00000005,
-    LognWarning =       0x00000006,
-    LogError =          0x00000007,
-    LognError =         0x00000008,
-    LoadApp =           0x00000009,
-    SetTitle =          0x0000000A,
-    SetResizable =      0x0000000B,
-    IsKeyReleased =     0x0000000C,
-    IsKeyJustPressed =  0x0000000D,
-    IsKeyPressed =      0x0000000E,
+    Quit =              0x0000_0000,
+    LogInfo =           0x0000_0001,
+    LognInfo =          0x0000_0002,
+    LogSuccess =        0x0000_0003,
+    LognSuccess =       0x0000_0004,
+    LogWarning =        0x0000_0005,
+    LognWarning =       0x0000_0006,
+    LogError =          0x0000_0007,
+    LognError =         0x0000_0008,
+    LoadApp =           0x0000_0009,
+    SetTitle =          0x0000_000A,
+    SetResizable =      0x0000_000B,
+    IsKeyReleased =     0x0000_000C,
+    IsKeyJustPressed =  0x0000_000D,
+    IsKeyPressed =      0x0000_000E,
+}
+
+#[repr(u64)]
+#[derive(PartialEq, Debug, Copy, Clone, TryFromPrimitive)]
+pub enum ApicaSpecificationBytecode {
+    EndOfSpecification =    0x0000_0000,
+    Title =                 0x0000_0001,
+    Id =                    0x0000_0002,
+    LoggerActivation =      0x0000_0003,
+    WindowWidth =           0x0000_0004,
+    WindowHeight =          0x0000_0005,
 }
 
 #[cfg(test)]
 mod tests {
     use num_enum::TryFromPrimitive;
-    use crate::bytecodes::{ApicaBuiltinFunctionBytecode, ApicaBytecode, ApicaEntrypointBytecode, ApicaTypeBytecode};
+    use crate::bytecodes::{ApicaBuiltinFunctionBytecode, ApicaBytecode, ApicaEntrypointBytecode, ApicaSpecificationBytecode, ApicaTypeBytecode};
 
     #[test]
     fn test_bytecode_from() {
@@ -124,5 +135,15 @@ mod tests {
         builtin_func_bytecode = ApicaBuiltinFunctionBytecode::try_from_primitive(0);
         assert!(builtin_func_bytecode.is_ok());
         assert_eq!(builtin_func_bytecode.unwrap(), ApicaBuiltinFunctionBytecode::Quit);
+    }
+
+    #[test]
+    fn test_specification_bytecode_from() {
+        let mut specification_bytecode = ApicaSpecificationBytecode::try_from_primitive(0xffffffff);
+        assert!(specification_bytecode.is_err());
+
+        specification_bytecode = ApicaSpecificationBytecode::try_from_primitive(0);
+        assert!(specification_bytecode.is_ok());
+        assert_eq!(specification_bytecode.unwrap(), ApicaSpecificationBytecode::EndOfSpecification);
     }
 }
