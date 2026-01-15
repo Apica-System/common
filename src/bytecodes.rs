@@ -21,6 +21,7 @@ pub enum ApicaBytecode {
     LessThan =              0x0000_000F,
     Equals =                0x0000_0010,
     Not =                   0x0000_0011,
+    As =                    0x0000_0012,
     Break =                 0x0000_0100,
     Continue =              0x0000_0101,
     BlankReturn =           0x0000_0102,
