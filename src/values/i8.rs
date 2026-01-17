@@ -117,6 +117,8 @@ impl ValueI8 {
     pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {
             match to {
+                ApicaTypeBytecode::Any => Some(Value::I8(ValueI8::init_with(*value))),
+                
                 ApicaTypeBytecode::I8 => Some(Value::I8(ValueI8::init_with(*value))),
                 ApicaTypeBytecode::I16 => Some(Value::I16(ValueI16::init_with(*value as i16))),
                 ApicaTypeBytecode::I32 => Some(Value::I32(ValueI32::init_with(*value as i32))),
@@ -134,6 +136,8 @@ impl ValueI8 {
             }
         } else {
             match to {
+                ApicaTypeBytecode::Any => Some(Value::I8(ValueI8::init_empty())),
+                
                 ApicaTypeBytecode::I8 => Some(Value::I8(ValueI8::init_empty())),
                 ApicaTypeBytecode::I16 => Some(Value::I16(ValueI16::init_empty())),
                 ApicaTypeBytecode::I32 => Some(Value::I32(ValueI32::init_empty())),

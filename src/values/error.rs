@@ -86,12 +86,16 @@ impl ValueError {
     pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(name) = &self.name {
             match to {
+                ApicaTypeBytecode::Any => Some(Value::Error(ValueError::init_with(name.clone(), self.details.clone()))),
+                
                 ApicaTypeBytecode::Error => Some(Value::Error(ValueError::init_with(name.clone(), self.details.clone()))),
                 
                 _ => None,
             }
         } else {
             match to {
+                ApicaTypeBytecode::Any => Some(Value::Error(ValueError::init_empty())),
+                
                 ApicaTypeBytecode::Error => Some(Value::Error(ValueError::init_empty())),
                 
                 _ => None,

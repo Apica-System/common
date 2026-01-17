@@ -1,7 +1,4 @@
-﻿use crate::values::bool::ValueBool;
-use crate::values::value::Value;
-
-pub struct ValuePointer {
+﻿pub struct ValuePointer {
     pointer: String,
     is_global: bool,
 }
@@ -12,7 +9,7 @@ impl ValuePointer {
     }
 
     pub fn is_null(&self) -> bool {
-        true
+        panic!("ValuePointer::is_null should never be called");
     }
     
     pub fn get_type_representation(&self) -> &str {
@@ -25,9 +22,5 @@ impl ValuePointer {
     
     pub fn is_global(&self) -> bool {
         self.is_global
-    }
-    
-    pub fn not(&self) -> Value {
-        Value::Bool(ValueBool::init_with(false))
     }
 }

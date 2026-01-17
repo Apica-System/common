@@ -36,17 +36,18 @@ impl ValueNull {
     pub fn get_type_representation(&self) -> &str {
         "null"
     }
-
-    pub fn convert(&'_ self, _: ApicaTypeBytecode) -> Option<Value> {
-        None // null is AUTOMATICALLY converted
-    }
     
     pub fn not(&self) -> Value {
         Value::Bool(ValueBool::init_with(true))
     }
 
+    pub fn convert(&'_ self, _: ApicaTypeBytecode) -> Option<Value> {
+        None // null is AUTOMATICALLY converted
+    }
+
     pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Value {
         match to {
+            ApicaTypeBytecode::Any => Value::Null(ValueNull::init()),
             ApicaTypeBytecode::Null => Value::Null(ValueNull::init()),
             ApicaTypeBytecode::I8 => Value::I8(ValueI8::init_empty()),
             ApicaTypeBytecode::I16 => Value::I16(ValueI16::init_empty()),
@@ -63,8 +64,6 @@ impl ValueNull {
             ApicaTypeBytecode::String => Value::String(ValueString::init_empty()),
             ApicaTypeBytecode::Error => Value::Error(ValueError::init_empty()),
             ApicaTypeBytecode::Type => Value::Type(ValueType::init_empty()),
-
-            _ => panic!("Auto-conversion failed due to an unexpected ApicaTypeBytecode"),
         }
     }
 }

@@ -3,6 +3,7 @@ use crate::values::bool::ValueBool;
 use crate::values::string::ValueString;
 use crate::values::value::Value;
 
+#[derive(Clone)]
 pub struct ValueType {
     kind: Option<ApicaTypeBytecode>,
     contained: Option<Vec<ValueType>>,
@@ -123,12 +124,16 @@ impl ValueType {
     pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(_) = &self.kind {
             match to {
+                ApicaTypeBytecode::Any => Some(Value::Type(self.clone())),
+                
                 ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::Type, None))),
 
                 _ => None,
             }
         } else {
             match to {
+                ApicaTypeBytecode::Any => Some(Value::Type(ValueType::init_empty())),
+                
                 ApicaTypeBytecode::Type => Some(Value::Type(ValueType::init_with(ApicaTypeBytecode::Type, None))),
 
                 _ => None,

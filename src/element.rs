@@ -53,8 +53,13 @@ impl Element {
         self.modifier.contains(ElementModifier::Error) || self.modifier.contains(ElementModifier::Controller)
     }
 
-    pub fn check_convert(self, to: ApicaTypeBytecode) -> Element {
+    pub fn check_convert(mut self, to: ApicaTypeBytecode) -> Element {
         if self.is_error_or_controller() {
+            return self;
+        }
+
+        if to == ApicaTypeBytecode::Any {
+            self.add_modifier(ElementModifier::Any);
             return self;
         }
 
@@ -102,7 +107,11 @@ impl Element {
     }
 
     pub fn not(&mut self) -> Element {
-        Element::init(ElementModifier::None, self.value.not())
+        if let Some(value_not) = self.value.not() {
+            Element::init(ElementModifier::None, value_not)   
+        } else {
+            Element::create_error(Value::unary_operation_error("!", self.value.get_type_representation()))
+        }
     }
 
     pub fn convert(&self, to: ApicaTypeBytecode) -> Element {

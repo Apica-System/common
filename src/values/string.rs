@@ -97,13 +97,17 @@ impl ValueString {
     
     pub fn auto_convert(&self, to: ApicaTypeBytecode) -> Option<Value> {
         if let Some(value) = &self.value {
-            match to {        
+            match to {      
+                ApicaTypeBytecode::Any => Some(Value::String(ValueString::init_with(value.clone()))),
+                
                 ApicaTypeBytecode::String => Some(Value::String(ValueString::init_with(value.clone()))),
                 
                 _ => None,
             }
         } else {
             match to {
+                ApicaTypeBytecode::Any => Some(Value::String(ValueString::init_empty())),
+                
                 ApicaTypeBytecode::String => Some(Value::String(ValueString::init_empty())),
                 
                 _ => None,

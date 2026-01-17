@@ -223,29 +223,30 @@ impl Value {
         }
     }
     
-    pub fn not(&self) -> Value {
+    pub fn not(&self) -> Option<Value> {
         match self {
-            Value::Null(null) => null.not(),
-            Value::Pointer(pointer) => pointer.not(),
+            Value::Null(null) => Some(null.not()),
             
-            Value::I8(i8) => i8.not(),
-            Value::I16(i16) => i16.not(),
-            Value::I32(i32) => i32.not(),
-            Value::I64(i64) => i64.not(),
-            Value::U8(u8) => u8.not(),
-            Value::U16(u16) => u16.not(),
-            Value::U32(u32) => u32.not(),
-            Value::U64(u64) => u64.not(),
+            Value::I8(i8) => Some(i8.not()),
+            Value::I16(i16) => Some(i16.not()),
+            Value::I32(i32) => Some(i32.not()),
+            Value::I64(i64) => Some(i64.not()),
+            Value::U8(u8) => Some(u8.not()),
+            Value::U16(u16) => Some(u16.not()),
+            Value::U32(u32) => Some(u32.not()),
+            Value::U64(u64) => Some(u64.not()),
             
-            Value::F32(f32) => f32.not(),
-            Value::F64(f64) => f64.not(),
-            Value::Bool(bool) => bool.not(),
+            Value::F32(f32) => Some(f32.not()),
+            Value::F64(f64) => Some(f64.not()),
+            Value::Bool(bool) => Some(bool.not()),
             
-            Value::Char(char) => char.not(),
-            Value::String(string) => string.not(),
+            Value::Char(char) => Some(char.not()),
+            Value::String(string) => Some(string.not()),
             
-            Value::Error(error) => error.not(),
-            Value::Type(t) => t.not(),
+            Value::Error(error) => Some(error.not()),
+            Value::Type(t) => Some(t.not()),
+            
+            _ => None,
         }
     }
 
