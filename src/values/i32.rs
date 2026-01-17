@@ -14,6 +14,7 @@ use crate::values::u64::ValueU64;
 use crate::values::u8::ValueU8;
 use crate::values::value::Value;
 
+#[derive(Clone)]
 pub struct ValueI32 {
     value: Option<i32>,
 }

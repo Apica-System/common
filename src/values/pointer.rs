@@ -1,4 +1,5 @@
-﻿pub struct ValuePointer {
+﻿#[derive(Clone)]
+pub struct ValuePointer {
     pointer: String,
     is_global: bool,
 }

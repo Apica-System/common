@@ -4,6 +4,7 @@ use crate::values::bool::ValueBool;
 use crate::values::string::ValueString;
 use crate::values::value::Value;
 
+#[derive(Clone)]
 pub struct ValueError {
     name: Option<String>,
     details: Option<String>,

@@ -3,6 +3,7 @@ use crate::values::_type::ValueType;
 use crate::values::bool::ValueBool;
 use crate::values::value::Value;
 
+#[derive(Clone)]
 pub struct ValueString {
     value: Option<String>,
 }

@@ -17,6 +17,7 @@ use crate::values::u32::ValueU32;
 use crate::values::u64::ValueU64;
 use crate::values::u8::ValueU8;
 
+#[derive(Clone)]
 pub enum Value {
     Null(ValueNull),
     Pointer(ValuePointer),
