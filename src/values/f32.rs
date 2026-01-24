@@ -69,6 +69,27 @@ impl ValueF32 {
         }
     }
     
+    pub fn subtract(&self, other: &Value) -> Option<Value> {
+        match other {
+            Value::I8(i8) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - i8.get_value().unwrap() as f32))),
+            Value::I16(i16) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - i16.get_value().unwrap() as f32))),
+            Value::I32(i32) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - i32.get_value().unwrap() as f32))),
+            Value::I64(i64) => Some(Value::F64(ValueF64::init_with(self.value.unwrap() as f64 - i64.get_value().unwrap() as f64))),
+            Value::U8(u8) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - u8.get_value().unwrap() as f32))),
+            Value::U16(u16) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - u16.get_value().unwrap() as f32))),
+            Value::U32(u32) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - u32.get_value().unwrap() as f32))),
+            Value::U64(u64) => Some(Value::F64(ValueF64::init_with(self.value.unwrap() as f64 - u64.get_value().unwrap() as f64))),
+
+            Value::F32(f32) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - f32.get_value().unwrap()))),
+            Value::F64(f64) => Some(Value::F64(ValueF64::init_with(self.value.unwrap() as f64 - f64.get_value().unwrap()))),
+            Value::Bool(bool) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - if bool.get_value().unwrap() { 1.0 } else { 0.0 }))),
+
+            Value::Char(char) => Some(Value::F32(ValueF32::init_with(self.value.unwrap() - char.get_value().unwrap() as u32 as f32))),
+
+            _ => None,
+        }
+    }
+    
     pub fn increment(&mut self) -> Option<Value> {
         if let Some(value) = self.value.as_mut() {
             let old_value = Value::F32(ValueF32::init_with(*value));

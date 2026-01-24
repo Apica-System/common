@@ -190,6 +190,27 @@ impl Value {
         }
     }
 
+    pub fn subtract(&self, other: &Value) -> Option<Value> {
+        match self {
+            Value::I8(i8) => i8.subtract(other),
+            Value::I16(i16) => i16.subtract(other),
+            Value::I32(i32) => i32.subtract(other),
+            Value::I64(i64) => i64.subtract(other),
+            Value::U8(u8) => u8.subtract(other),
+            Value::U16(u16) => u16.subtract(other),
+            Value::U32(u32) => u32.subtract(other),
+            Value::U64(u64) => u64.subtract(other),
+
+            Value::F32(f32) => f32.subtract(other),
+            Value::F64(f64) => f64.subtract(other),
+            Value::Bool(bool) => bool.subtract(other),
+
+            Value::Char(char) => char.subtract(other),
+
+            _ => None,
+        }
+    }
+
     pub fn increment(&mut self) -> Option<Value> {
         match self {
             Value::I8(i8) => i8.increment(),

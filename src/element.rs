@@ -81,6 +81,18 @@ impl Element {
             Element::create_error(Value::binary_operation_error("+", self.value.get_type_representation(), other.value.get_type_representation()))
         }
     }
+    
+    pub fn subtract(&self, other: &Element) -> Element {
+        if self.value.is_null() || other.value.is_null() {
+            return Element::create_error(Value::null_operation_error("-", false));
+        }
+        
+        if let Some(subtracted) = self.value.subtract(other.get_value()) {
+            Element::init(ElementModifier::None, subtracted)
+        } else {
+            Element::create_error(Value::binary_operation_error("-", self.value.get_type_representation(), other.value.get_type_representation()))
+        }
+    }
 
     pub fn increment(&mut self) -> Element {
         if self.value.is_null() {
