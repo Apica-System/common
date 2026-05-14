@@ -2,9 +2,9 @@
 #include "values/null.hpp"
 using namespace common::elements;
 
-Element::Element(ElementModifier modifier, values::Value *value) {
-    this->modifier = modifier;
-    this->value = value;
+Element::Element(ElementModifier modifier, values::Value *value)
+    : modifier(modifier), value(value) {
+    
 }
 
 Element::~Element() {

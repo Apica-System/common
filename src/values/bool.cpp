@@ -1,12 +1,14 @@
 #include "values/bool.hpp"
 using namespace common::values;
 
-ValueBool::ValueBool() {
-    this->value = std::nullopt;
+ValueBool::ValueBool()
+    : value(std::nullopt) {
+
 }
 
-ValueBool::ValueBool(bool value) {
-    this->value = value;
+ValueBool::ValueBool(bool value)
+    : value(value) {
+    
 }
 
 void ValueBool::show(char end) const {

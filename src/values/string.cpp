@@ -1,12 +1,14 @@
 #include "values/string.hpp"
 using namespace common::values;
 
-ValueString::ValueString() {
-    this->value = std::nullopt;
+ValueString::ValueString()
+    : value(std::nullopt) {
+    
 }
 
-ValueString::ValueString(const std::string &value) {
-    this->value = value;
+ValueString::ValueString(const std::string &value)
+    : value(value) {
+    
 }
 
 void ValueString::show(char end) const {

@@ -1,19 +1,19 @@
 #include "values/error.hpp"
 using namespace common::values;
 
-ValueError::ValueError() {
-    this->name = std::nullopt;
-    this->details = std::nullopt;
+ValueError::ValueError() 
+    : name(std::nullopt), details(std::nullopt) {
+    
 }
 
-ValueError::ValueError(const std::string &name) {
-    this->name = name;
-    this->details = std::nullopt;
+ValueError::ValueError(const std::string &name)
+    : name(name), details(std::nullopt) {
+    
 }
 
-ValueError::ValueError(const std::string &name, const std::string &details) {
-    this->name = name;
-    this->details = details;
+ValueError::ValueError(const std::string &name, const std::string &details)
+    : name(name), details(details) {
+    
 }
 
 void ValueError::show(char end) const {

@@ -1,12 +1,14 @@
 #include "values/char.hpp"
 using namespace common::values;
 
-ValueChar::ValueChar() {
-    this->value = std::nullopt;
+ValueChar::ValueChar()
+    : value(std::nullopt) {
+    
 }
 
-ValueChar::ValueChar(uint32_t value) {
-    this->value = value;
+ValueChar::ValueChar(uint32_t value)
+    : value(value) {
+    
 }
 
 void ValueChar::show(char end) const {

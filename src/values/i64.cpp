@@ -1,12 +1,14 @@
 #include "values/i64.hpp"
 using namespace common::values;
 
-ValueI64::ValueI64() {
-    this->value = std::nullopt;
+ValueI64::ValueI64()
+    : value(std::nullopt) {
+    
 }
 
-ValueI64::ValueI64(int64_t value) {
-    this->value = value;
+ValueI64::ValueI64(int64_t value)
+    : value(value) {
+    
 }
 
 void ValueI64::show(char end) const {

@@ -1,12 +1,14 @@
 #include "values/u32.hpp"
 using namespace common::values;
 
-ValueU32::ValueU32() {
-    this->value = std::nullopt;
+ValueU32::ValueU32()
+    : value(std::nullopt) {
+    
 }
 
-ValueU32::ValueU32(uint32_t value) {
-    this->value = value;
+ValueU32::ValueU32(uint32_t value)
+    : value(value) {
+    
 }
 
 void ValueU32::show(char end) const {

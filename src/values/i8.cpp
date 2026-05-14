@@ -1,12 +1,14 @@
 #include "values/i8.hpp"
 using namespace common::values;
 
-ValueI8::ValueI8() {
-    this->value = std::nullopt;
+ValueI8::ValueI8()
+    : value(std::nullopt) {
+    
 }
 
-ValueI8::ValueI8(int8_t value) {
-    this->value = value;
+ValueI8::ValueI8(int8_t value)
+    : value(value) {
+    
 }
 
 void ValueI8::show(char end) const {

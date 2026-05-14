@@ -1,12 +1,14 @@
 #include "values/u16.hpp"
 using namespace common::values;
 
-ValueU16::ValueU16() {
-    this->value = std::nullopt;
+ValueU16::ValueU16()
+    : value(std::nullopt) {
+    
 }
 
-ValueU16::ValueU16(uint16_t value) {
-    this->value = value;
+ValueU16::ValueU16(uint16_t value)
+    : value(value) {
+    
 }
 
 void ValueU16::show(char end) const {

@@ -1,12 +1,14 @@
 #include "values/type.hpp"
 using namespace common::values;
 
-ValueType::ValueType() {
-    this->type_kind = std::nullopt;
+ValueType::ValueType()
+    : type_kind(std::nullopt) {
+    
 }
 
-ValueType::ValueType(ValueKind type_kind) {
-    this->type_kind = type_kind;
+ValueType::ValueType(ValueKind type_kind)
+    : type_kind(type_kind) {
+    
 }
 
 std::string ValueType::getKindRepr(ValueKind kind) {

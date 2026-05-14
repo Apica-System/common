@@ -1,12 +1,14 @@
 #include "values/f64.hpp"
 using namespace common::values;
 
-ValueF64::ValueF64() {
-    this->value = std::nullopt;
+ValueF64::ValueF64()
+    : value(std::nullopt) {
+    
 }
 
-ValueF64::ValueF64(double value) {
-    this->value = value;
+ValueF64::ValueF64(double value)
+    : value(value) {
+    
 }
 
 void ValueF64::show(char end) const {

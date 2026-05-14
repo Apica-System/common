@@ -1,12 +1,14 @@
 #include "values/f32.hpp"
 using namespace common::values;
 
-ValueF32::ValueF32() {
-    this->value = std::nullopt;
+ValueF32::ValueF32()
+    : value(std::nullopt) {
+    
 }
 
-ValueF32::ValueF32(float value) {
-    this->value = value;
+ValueF32::ValueF32(float value)
+    : value(value) {
+    
 }
 
 void ValueF32::show(char end) const {

@@ -1,12 +1,14 @@
 #include "values/u64.hpp"
 using namespace common::values;
 
-ValueU64::ValueU64() {
-    this->value = std::nullopt;
+ValueU64::ValueU64()
+    : value(std::nullopt) {
+    
 }
 
-ValueU64::ValueU64(uint64_t value) {
-    this->value = value;
+ValueU64::ValueU64(uint64_t value)
+    : value(value) {
+    
 }
 
 void ValueU64::show(char end) const {

@@ -1,12 +1,14 @@
 #include "values/i32.hpp"
 using namespace common::values;
 
-ValueI32::ValueI32() {
-    this->value = std::nullopt;
+ValueI32::ValueI32()
+    : value(std::nullopt) {
+    
 }
 
-ValueI32::ValueI32(int32_t value) {
-    this->value = value;
+ValueI32::ValueI32(int32_t value)
+    : value(value) {
+    
 }
 
 void ValueI32::show(char end) const {
