@@ -1,0 +1,89 @@
+#pragma once
+
+#include <cstdint>
+
+namespace common::bytecodes {
+    enum ApicaBytecode : uint64_t {
+        EndOfFile =  0x00000000,
+        EndOfBlock = 0x00000001,
+        Entrypoint = 0x00000002,
+        BuiltinFuncCall = 0x00000003,
+        Literal = 0x00000004,
+        Global = 0x00000005,
+        Compound = 0x00000006,
+        VarConstCall = 0x00000007,
+        VarDecl = 0x00000008,
+        ConstDecl = 0x00000009,
+        Add = 0x0000000A,
+        Subtract = 0x0000000B,
+        Assign = 0x0000000C,
+        Increment = 0x0000000D,
+        Decrement = 0x0000000E,
+        LessThan = 0x0000000F,
+        Equals = 0x00000010,
+        Not = 0x00000011,
+        As = 0x00000012,
+        Break = 0x00000100,
+        Continue = 0x00000101,
+        BlankReturn = 0x00000102,
+        FilledReturn = 0x00000103,
+        QuestionOperation = 0x00000104,
+        If = 0x00000105,
+        IfElse = 0x00000106,
+        While = 0x00000107,
+    };
+
+    enum ApicaEntrypointBytecode : uint64_t {
+        Init =      0x00000000,
+        Update =    0x00000001,
+        Quit =      0x00000002,
+    };
+
+    enum ApicaBuiltinFunctionBytecode : uint64_t {
+        Quit = 0x00000000,
+        LogInfo = 0x00000001,
+        LognInfo = 0x00000002,
+        LogSuccess = 0x00000003,
+        LognSuccess = 0x00000004,
+        LogWarning = 0x00000005,
+        LognWarning = 0x00000006,
+        LogError = 0x00000007,
+        LognError = 0x00000008,
+        LoadApp = 0x00000009,
+        SetTitle = 0x0000000A,
+        SetResizable = 0x0000000B,
+        IsKeyReleased = 0x0000000C,
+        IsKeyJustPressed = 0x0000000D,
+        IsKeyPressed = 0x0000000E,
+    };
+
+    enum ApicaSpecificationBytecode : uint64_t {
+        EndOfSpecification = 0x00000000,
+        Title = 0x00000001,
+        Id = 0x00000002,
+        LoggerActivation = 0x00000003,
+        WindowWidth = 0x00000004,
+        WindowHeight = 0x00000005,
+        Version = 0x00000006,
+    };
+
+    enum ApicaTypeBytecode : uint64_t {
+        Null = 0x00000000,
+        Any = 0x00000001,
+        I8 = 0x00000002,
+        I16 = 0x00000003,
+        I32 = 0x00000004,
+        I64 = 0x00000005,
+        U8 = 0x00000006,
+        U16 = 0x00000007,
+        U32 = 0x00000008,
+        U64 = 0x00000009,
+        F32 = 0x0000000A,
+        F64 = 0x0000000B,
+        Bool = 0x0000000C,
+        Char = 0x0000000D,
+        String = 0x0000000E,
+        Error = 0x0000000F,
+        Type = 0x00000010,
+    };
+}
