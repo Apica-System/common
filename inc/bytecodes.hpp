@@ -40,7 +40,7 @@ namespace common::bytecodes {
     };
 
     enum ApicaBuiltinFunctionBytecode : uint64_t {
-        Quit = 0x00000000,
+        QuitApp = 0x00000000,
         LogInfo = 0x00000001,
         LognInfo = 0x00000002,
         LogSuccess = 0x00000003,
