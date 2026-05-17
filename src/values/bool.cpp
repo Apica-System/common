@@ -13,7 +13,7 @@ ValueBool::ValueBool(bool value)
 
 void ValueBool::show(char end) const {
     if (this->value)
-        std::cout << "bool<" << this->value.value() << '>' << end;
+        std::cout << "bool<" << (this->value.value() ? "true" : "false") << '>' << end;
     else
         std::cout << "bool<null>" << end;
 }
