@@ -13,7 +13,7 @@ ValueU8::ValueU8(uint8_t value)
 
 void ValueU8::show(char end) const {
     if (this->value)
-        std::cout << "u8<" << (uint16_t)this->value.value() << '>' << end;
+        std::cout << "u8<" << static_cast<uint16_t>(this->value.value()) << '>' << end;
     else
         std::cout << "u8<null>" << end;
 }

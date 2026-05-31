@@ -65,6 +65,7 @@ namespace common::bytecodes {
         WindowWidth = 0x00000004,
         WindowHeight = 0x00000005,
         Version = 0x00000006,
+        IdCount = 0x00000007,
     };
 
     enum ApicaTypeBytecode : uint64_t {
