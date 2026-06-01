@@ -6,17 +6,27 @@ namespace common::values {
     class ValueType final : public Value {
     public:
         ValueType();
-        ValueType(ValueKind type_kind);
+        ValueType(common::bytecodes::ApicaTypeBytecode type_kind);
 
-        static std::string getKindRepr(ValueKind kind);
+        static std::string getKindRepr(common::bytecodes::ApicaTypeBytecode kind);
 
         void show(char end) const override;
         bool isNull() const override;
         std::string getTypeRepr() const override;
-        ValueKind getKind() const override;
+        common::bytecodes::ApicaTypeBytecode getKind() const override;
 
-        std::optional<ValueKind> getTypeKind() const;
+        std::optional<Value*> add(const Value *other) const override;
+        std::optional<Value*> increment() override;
+        std::optional<Value*> subtract(const Value *other) const override;
+        std::optional<Value*> decrement() override;
+
+        std::optional<Value*> unaryNot() const override;
+
+        std::optional<Value*> convert(common::bytecodes::ApicaTypeBytecode to) const override;
+        std::optional<Value*> autoConvert(common::bytecodes::ApicaTypeBytecode to) const override;
+
+        std::optional<common::bytecodes::ApicaTypeBytecode> getTypeKind() const;
     private:
-        std::optional<ValueKind> type_kind;
+        std::optional<common::bytecodes::ApicaTypeBytecode> type_kind;
     };
 }

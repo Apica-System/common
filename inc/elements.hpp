@@ -17,16 +17,29 @@ namespace common::elements {
 
     class Element final {
     public:
-        Element(ElementModifier modifier, values::Value *value);
+        Element(uint8_t modifier, values::Value *value);
         ~Element();
 
         static Element createNull();
 
-        ElementModifier getModifier() const;
+        uint8_t getModifier() const;
+        void addModifier(ElementModifier modifier);
+
         values::Value *getValue() const;
         bool isErrorOrController() const;
+
+        Element add(const Element &other) const;
+        Element increment();
+        Element subtract(const Element &other) const;
+        Element decrement();
+
+        Element unaryNot() const;
+
+        bool shouldConvert(common::bytecodes::ApicaTypeBytecode to);
+        Element convert(common::bytecodes::ApicaTypeBytecode to);
+        Element autoConvert(common::bytecodes::ApicaTypeBytecode to);
     private:
-        ElementModifier modifier;
+        uint8_t modifier;
         values::Value *value;
     };
 }
