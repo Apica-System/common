@@ -33,7 +33,7 @@ namespace common::elements {
 
         Element *unaryNot() const;
 
-        Element *checkConvert(common::bytecodes::ApicaTypeBytecode to);
+        bool checkConvert(common::bytecodes::ApicaTypeBytecode to);
         Element *convert(common::bytecodes::ApicaTypeBytecode to);
         Element *autoConvert(common::bytecodes::ApicaTypeBytecode to);
     private:
