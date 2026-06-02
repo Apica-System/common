@@ -14,10 +14,6 @@ Element::~Element() {
     if (this->value) delete this->value;
 }
 
-Element Element::createNull() {
-    return Element(ElementModifier::None, new values::ValueNull());
-}
-
 uint8_t Element::getModifier() const {
     return this->modifier;
 }
@@ -34,9 +30,9 @@ bool Element::isErrorOrController() const {
     return this->modifier >= ElementModifier::Error && this->modifier <= ElementModifier::Return;
 }
 
-Element Element::add(const Element &other) const {
+Element *Element::add(const Element &other) const {
     if (this->value->isNull() || other.value->isNull()) {
-        return Element(
+        return new Element(
             ElementModifier::Error,
             common::values::Value::nullOperationError("+", false)
         );
@@ -44,18 +40,18 @@ Element Element::add(const Element &other) const {
 
     std::optional<common::values::Value*> result = this->value->add(other.getValue());
     return result.has_value()
-        ? Element(
+        ? new Element(
             ElementModifier::None,
             result.value()
-        ) : Element(
+        ) : new Element(
             ElementModifier::Error,
             common::values::Value::binaryOperationError("+", this->value->getTypeRepr(), other.value->getTypeRepr())
         );
 }
 
-Element Element::increment() {
+Element *Element::increment() {
     if (this->value->isNull()) {
-        return Element(
+        return new Element(
             ElementModifier::Error,
             common::values::Value::nullOperationError("right ++", true)
         );
@@ -63,18 +59,18 @@ Element Element::increment() {
 
     std::optional<common::values::Value*> result = this->value->increment();
     return result.has_value()
-        ? Element(
+        ? new Element(
             ElementModifier::None,
             result.value()
-        ) : Element(
+        ) : new Element(
             ElementModifier::Error,
             common::values::Value::unaryOperationError("right ++", this->value->getTypeRepr())
         );
 }
 
-Element Element::subtract(const Element &other) const {
+Element *Element::subtract(const Element &other) const {
     if (this->value->isNull() || other.value->isNull()) {
-        return Element(
+        return new Element(
             ElementModifier::Error,
             common::values::Value::nullOperationError("-", false)
         );
@@ -82,18 +78,18 @@ Element Element::subtract(const Element &other) const {
 
     std::optional<common::values::Value*> result = this->value->subtract(other.getValue());
     return result.has_value()
-        ? Element(
+        ? new Element(
             ElementModifier::None,
             result.value()
-        ) : Element(
+        ) : new Element(
             ElementModifier::Error,
             common::values::Value::binaryOperationError("-", this->value->getTypeRepr(), other.value->getTypeRepr())
         );
 }
 
-Element Element::decrement() {
+Element *Element::decrement() {
     if (this->value->isNull()) {
-        return Element(
+        return new Element(
             ElementModifier::Error,
             common::values::Value::nullOperationError("right --", true)
         );
@@ -101,53 +97,62 @@ Element Element::decrement() {
 
     std::optional<common::values::Value*> result = this->value->decrement();
     return result.has_value()
-        ? Element(
+        ? new Element(
             ElementModifier::None,
             result.value()
-        ) : Element(
+        ) : new Element(
             ElementModifier::Error,
             common::values::Value::unaryOperationError("right --", this->value->getTypeRepr())
         );
 }
 
-Element Element::unaryNot() const {
+Element *Element::unaryNot() const {
     std::optional<common::values::Value*> result = this->value->unaryNot();
     return result.has_value()
-        ? Element(
+        ? new Element(
             ElementModifier::None,
             result.value()
-        ) : Element(
+        ) : new Element(
             ElementModifier::Error,
             common::values::Value::unaryOperationError("!", this->value->getTypeRepr())
         );
 }
 
-bool Element::shouldConvert(common::bytecodes::ApicaTypeBytecode to) {
-    if (this->isErrorOrController() || to == common::bytecodes::ApicaTypeBytecode::Any)
-        return false;
+Element *Element::checkConvert(common::bytecodes::ApicaTypeBytecode to) {
+    if (this->isErrorOrController() || this->value->getKind() == to)
+        return this;
     
-    return this->value->getKind() != to;
+    if (to == common::bytecodes::ApicaTypeBytecode::Any) {
+        this->modifier |= ElementModifier::Any;
+        return this;
+    }
+    
+    return this->autoConvert(to);
 }
 
-Element Element::convert(common::bytecodes::ApicaTypeBytecode to) {
+Element *Element::convert(common::bytecodes::ApicaTypeBytecode to) {
+    std::optional<common::values::Value*> auto_converted = this->value->autoConvert(to);
+    if (auto_converted)
+        return new Element(ElementModifier::None, auto_converted.value());
+
     std::optional<common::values::Value*> converted = this->value->convert(to);
     return converted.has_value()
-        ? Element(
+        ? new Element(
             ElementModifier::None,
             converted.value()
-        ) : Element(
+        ) : new Element(
             ElementModifier::Error,
             common::values::Value::binaryOperationError("as", this->value->getTypeRepr(), common::values::ValueType::getKindRepr(to))
         );
 }
 
-Element Element::autoConvert(common::bytecodes::ApicaTypeBytecode to) {
+Element *Element::autoConvert(common::bytecodes::ApicaTypeBytecode to) {
     std::optional<common::values::Value*> converted = this->value->autoConvert(to);
     return converted.has_value()
-        ? Element(
+        ? new Element(
             ElementModifier::None,
             converted.value()
-        ) : Element(
+        ) : new Element(
             ElementModifier::Error,
             common::values::Value::binaryOperationError("auto-as", this->value->getTypeRepr(), common::values::ValueType::getKindRepr(to))
         );
