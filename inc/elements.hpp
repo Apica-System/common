@@ -12,7 +12,8 @@ namespace common::elements {
         Error =     1 << 2,
         Break =     1 << 3,
         Continue =  1 << 4,
-        Return =    1 << 5
+        Return =    1 << 5,
+        Copy =      1 << 6
     };
 
     class Element final {
@@ -26,16 +27,16 @@ namespace common::elements {
         values::Value *getValue() const;
         bool isErrorOrController() const;
 
-        Element *add(const Element &other) const;
-        Element *increment();
-        Element *subtract(const Element &other) const;
-        Element *decrement();
+        Element add(const Element &other) const;
+        Element increment();
+        Element subtract(const Element &other) const;
+        Element decrement();
 
-        Element *unaryNot() const;
+        Element unaryNot() const;
 
-        Element *checkAndConvert(common::bytecodes::ApicaTypeBytecode to);
-        Element *convert(common::bytecodes::ApicaTypeBytecode to);
-        Element *autoConvert(common::bytecodes::ApicaTypeBytecode to);
+        void checkAndConvert(common::bytecodes::ApicaTypeBytecode to);
+        Element convert(common::bytecodes::ApicaTypeBytecode to);
+        Element autoConvert(common::bytecodes::ApicaTypeBytecode to);
     private:
         uint8_t modifier;
         values::Value *value;
