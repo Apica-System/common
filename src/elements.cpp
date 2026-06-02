@@ -118,11 +118,18 @@ Element *Element::unaryNot() const {
         );
 }
 
-bool Element::checkConvert(common::bytecodes::ApicaTypeBytecode to) {
-    return !(this->isErrorOrController() 
-            || this->value->getKind() == to 
-            || to == common::bytecodes::ApicaTypeBytecode::Any
-    );
+Element *Element::checkAndConvert(common::bytecodes::ApicaTypeBytecode to) {
+    if (this->isErrorOrController() || this->value->getKind() == to)
+        return this;
+    
+    if (to == common::bytecodes::ApicaTypeBytecode::Any) {
+        this->modifier |= ElementModifier::Any;
+        return this;
+    }
+
+    Element *converted = this->convert(to);
+    delete this;
+    return converted;
 }
 
 Element *Element::convert(common::bytecodes::ApicaTypeBytecode to) {
