@@ -22,6 +22,10 @@ void Element::addModifier(ElementModifier modifier) {
     this->modifier |= modifier;
 }
 
+void Element::removeModifier(ElementModifier modifier) {
+    this->modifier &= ~modifier;
+}
+
 common::values::Value *Element::getValue() const {
     return this->value;
 }

@@ -23,6 +23,7 @@ namespace common::elements {
 
         uint8_t getModifier() const;
         void addModifier(ElementModifier modifier);
+        void removeModifier(ElementModifier modifier);
 
         values::Value *getValue() const;
         bool isErrorOrController() const;
