@@ -253,7 +253,7 @@ std::optional<Value*> ValueU32::autoConvert(common::bytecodes::ApicaTypeBytecode
             case common::bytecodes::ApicaTypeBytecode::Char:
                 return new ValueChar(this->value.value());
             
-            default: return nullptr;
+            default: return std::nullopt;
         }
     } else {
         switch (to) {
@@ -294,7 +294,7 @@ std::optional<Value*> ValueU32::autoConvert(common::bytecodes::ApicaTypeBytecode
             case common::bytecodes::ApicaTypeBytecode::Char:
                 return new ValueChar();
             
-            default: return nullptr;
+            default: return std::nullopt;
         }
     }
 }

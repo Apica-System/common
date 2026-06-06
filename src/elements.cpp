@@ -142,6 +142,7 @@ void Element::checkAndConvert(common::bytecodes::ApicaTypeBytecode to) {
     delete this->value;
     if (converted) {
         this->value = converted.value();
+        return;
     }
 
     this->value = common::values::Value::binaryOperationError("as", this->value->getTypeRepr(), common::values::ValueType::getKindRepr(to));
