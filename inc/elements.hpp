@@ -28,16 +28,16 @@ namespace common::elements {
         values::Value *getValue() const;
         bool isErrorOrController() const;
 
-        Element add(const Element &other) const;
-        Element increment();
-        Element subtract(const Element &other) const;
-        Element decrement();
+        Element *add(const Element &other) const;
+        Element *increment();
+        Element *subtract(const Element &other) const;
+        Element *decrement();
 
-        Element unaryNot() const;
+        Element *unaryNot() const;
 
         void checkAndConvert(common::bytecodes::ApicaTypeBytecode to);
-        Element convert(common::bytecodes::ApicaTypeBytecode to);
-        Element autoConvert(common::bytecodes::ApicaTypeBytecode to);
+        Element *convert(common::bytecodes::ApicaTypeBytecode to);
+        Element *autoConvert(common::bytecodes::ApicaTypeBytecode to);
     private:
         uint8_t modifier;
         values::Value *value;
