@@ -28,9 +28,9 @@ namespace common::elements {
         values::Value *getValue() const;
         bool isErrorOrController() const;
 
-        Element *add(const Element &other) const;
+        Element *add(const Element *other) const;
         Element *increment();
-        Element *subtract(const Element &other) const;
+        Element *subtract(const Element *other) const;
         Element *decrement();
 
         Element *unaryNot() const;

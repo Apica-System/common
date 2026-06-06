@@ -34,22 +34,22 @@ bool Element::isErrorOrController() const {
     return this->modifier >= ElementModifier::Error && this->modifier <= ElementModifier::Return;
 }
 
-Element *Element::add(const Element &other) const {
-    if (this->value->isNull() || other.value->isNull()) {
+Element *Element::add(const Element *other) const {
+    if (this->value->isNull() || other->value->isNull()) {
         return new Element(
             ElementModifier::Error,
             common::values::Value::nullOperationError("+", false)
         );
     }
 
-    std::optional<common::values::Value*> result = this->value->add(other.getValue());
+    std::optional<common::values::Value*> result = this->value->add(other->value);
     return result.has_value()
         ? new Element(
             ElementModifier::None,
             result.value()
         ) : new Element(
             ElementModifier::Error,
-            common::values::Value::binaryOperationError("+", this->value->getTypeRepr(), other.value->getTypeRepr())
+            common::values::Value::binaryOperationError("+", this->value->getTypeRepr(), other->value->getTypeRepr())
         );
 }
 
@@ -72,22 +72,22 @@ Element *Element::increment() {
         );
 }
 
-Element *Element::subtract(const Element &other) const {
-    if (this->value->isNull() || other.value->isNull()) {
+Element *Element::subtract(const Element *other) const {
+    if (this->value->isNull() || other->value->isNull()) {
         return new Element(
             ElementModifier::Error,
             common::values::Value::nullOperationError("-", false)
         );
     }
 
-    std::optional<common::values::Value*> result = this->value->subtract(other.getValue());
+    std::optional<common::values::Value*> result = this->value->subtract(other->value);
     return result.has_value()
         ? new Element(
             ElementModifier::None,
             result.value()
         ) : new Element(
             ElementModifier::Error,
-            common::values::Value::binaryOperationError("-", this->value->getTypeRepr(), other.value->getTypeRepr())
+            common::values::Value::binaryOperationError("-", this->value->getTypeRepr(), other->value->getTypeRepr())
         );
 }
 
