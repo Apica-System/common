@@ -115,6 +115,10 @@ std::optional<Value*> ValueBool::increment() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueBool::leftIncrement() {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueBool::subtract(const Value *other) const {
     switch (other->getKind()) {
         case common::bytecodes::ApicaTypeBytecode::I8: {
@@ -180,12 +184,21 @@ std::optional<Value*> ValueBool::subtract(const Value *other) const {
         default: return std::nullopt;
     }
 }
+
 std::optional<Value*> ValueBool::decrement() {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueBool::leftDecrement() {
     return std::nullopt;
 }
 
 std::optional<Value*> ValueBool::unaryNot() const {
     return new ValueBool(this->value.has_value() ? !this->value.value() : true);
+}
+
+std::optional<Value*> ValueBool::bitwiseNot() const {
+    return new ValueBool(!this->value.value());
 }
 
 std::optional<Value*> ValueBool::convert(common::bytecodes::ApicaTypeBytecode to) const {

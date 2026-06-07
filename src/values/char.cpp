@@ -125,6 +125,10 @@ std::optional<Value*> ValueChar::increment() {
     return new ValueChar(this->value.value()++);
 }
 
+std::optional<Value*> ValueChar::leftIncrement() {
+    return new ValueChar(++this->value.value());
+}
+
 std::optional<Value*> ValueChar::subtract(const Value *other) const {
     switch (other->getKind()) {
         case common::bytecodes::ApicaTypeBytecode::I8: {
@@ -195,8 +199,16 @@ std::optional<Value*> ValueChar::decrement() {
     return new ValueChar(this->value.value()--);
 }
 
+std::optional<Value*> ValueChar::leftDecrement() {
+    return new ValueChar(--this->value.value());
+}
+
 std::optional<Value*> ValueChar::unaryNot() const {
     return new ValueBool(this->value.has_value() ? !this->value.value() : true);
+}
+
+std::optional<Value*> ValueChar::bitwiseNot() const {
+    return new ValueChar(~this->value.value());
 }
 
 std::optional<Value*> ValueChar::convert(common::bytecodes::ApicaTypeBytecode to) const {

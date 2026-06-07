@@ -72,6 +72,25 @@ Element *Element::increment() {
         );
 }
 
+Element *Element::leftIncrement() {
+    if (this->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError("left ++", true)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->leftIncrement();
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::unaryOperationError("left ++", this->value->getTypeRepr())
+        );
+}
+
 Element *Element::subtract(const Element *other) const {
     if (this->value->isNull() || other->value->isNull()) {
         return new Element(
@@ -110,6 +129,25 @@ Element *Element::decrement() {
         );
 }
 
+Element *Element::leftDecrement() {
+    if (this->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError("left --", true)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->leftDecrement();
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::unaryOperationError("left --", this->value->getTypeRepr())
+        );
+}
+
 Element *Element::unaryNot() const {
     std::optional<common::values::Value*> result = this->value->unaryNot();
     return result.has_value()
@@ -119,6 +157,25 @@ Element *Element::unaryNot() const {
         ) : new Element(
             ElementModifier::Error,
             common::values::Value::unaryOperationError("!", this->value->getTypeRepr())
+        );
+}
+
+Element *Element::bitwiseNot() const {
+    if (this->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError("~", true)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->bitwiseNot();
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::unaryOperationError("~", this->value->getTypeRepr())
         );
 }
 

@@ -115,6 +115,10 @@ std::optional<Value*> ValueF64::increment() {
     return new ValueF64(this->value.value()++);
 }
 
+std::optional<Value*> ValueF64::leftIncrement() {
+    return new ValueF64(++this->value.value());
+}
+
 std::optional<Value*> ValueF64::subtract(const Value *other) const {
     switch (other->getKind()) {
         case common::bytecodes::ApicaTypeBytecode::I8: {
@@ -184,8 +188,16 @@ std::optional<Value*> ValueF64::decrement() {
     return new ValueF64(this->value.value()--);
 }
 
+std::optional<Value*> ValueF64::leftDecrement() {
+    return new ValueF64(--this->value.value());
+}
+
 std::optional<Value*> ValueF64::unaryNot() const {
     return new ValueBool(this->value.has_value() ? !this->value.value() : true);
+}
+
+std::optional<Value*> ValueF64::bitwiseNot() const {
+    return std::nullopt;
 }
 
 std::optional<Value*> ValueF64::convert(common::bytecodes::ApicaTypeBytecode to) const {

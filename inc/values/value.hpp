@@ -27,10 +27,13 @@ namespace common::values {
 
         virtual std::optional<Value*> add(const Value *other) const = 0;
         virtual std::optional<Value*> increment() = 0;
+        virtual std::optional<Value*> leftIncrement() = 0;
         virtual std::optional<Value*> subtract(const Value *other) const = 0;
         virtual std::optional<Value*> decrement() = 0;
+        virtual std::optional<Value*> leftDecrement() = 0;
 
         virtual std::optional<Value*> unaryNot() const = 0;
+        virtual std::optional<Value*> bitwiseNot() const = 0;
 
         virtual std::optional<Value*> convert(common::bytecodes::ApicaTypeBytecode to) const = 0;
         virtual std::optional<Value*> autoConvert(common::bytecodes::ApicaTypeBytecode to) const = 0;

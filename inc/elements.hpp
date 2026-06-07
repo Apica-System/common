@@ -30,10 +30,13 @@ namespace common::elements {
 
         Element *add(const Element *other) const;
         Element *increment();
+        Element *leftIncrement();
         Element *subtract(const Element *other) const;
         Element *decrement();
+        Element *leftDecrement();
 
         Element *unaryNot() const;
+        Element *bitwiseNot() const;
 
         void checkAndConvert(common::bytecodes::ApicaTypeBytecode to);
         Element *convert(common::bytecodes::ApicaTypeBytecode to);

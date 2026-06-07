@@ -53,6 +53,10 @@ std::optional<Value*> ValueError::increment() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueError::leftIncrement() {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueError::subtract(const Value *) const {
     return std::nullopt;
 }
@@ -61,8 +65,16 @@ std::optional<Value*> ValueError::decrement() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueError::leftDecrement() {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueError::unaryNot() const {
     return new ValueBool(!this->name.has_value());
+}
+
+std::optional<Value*> ValueError::bitwiseNot() const {
+    return std::nullopt;
 }
 
 std::optional<Value*> ValueError::convert(common::bytecodes::ApicaTypeBytecode to) const {

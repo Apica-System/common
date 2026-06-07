@@ -16,10 +16,13 @@ namespace common::values {
 
         std::optional<Value*> add(const Value *other) const override;
         std::optional<Value*> increment() override;
+        std::optional<Value*> leftIncrement() override;
         std::optional<Value*> subtract(const Value *other) const override;
         std::optional<Value*> decrement() override;
+        std::optional<Value*> leftDecrement() override;
 
         std::optional<Value*> unaryNot() const override;
+        std::optional<Value*> bitwiseNot() const override;
 
         std::optional<Value*> convert(common::bytecodes::ApicaTypeBytecode to) const override;
         std::optional<Value*> autoConvert(common::bytecodes::ApicaTypeBytecode to) const override;

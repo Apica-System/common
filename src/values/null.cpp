@@ -46,6 +46,10 @@ std::optional<Value*> ValueNull::increment() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueNull::leftIncrement() {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueNull::subtract(const Value *) const {
     return std::nullopt;
 }
@@ -54,8 +58,16 @@ std::optional<Value*> ValueNull::decrement() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueNull::leftDecrement() {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueNull::unaryNot() const {
     return new ValueBool(true);
+}
+
+std::optional<Value*> ValueNull::bitwiseNot() const {
+    return std::nullopt;
 }
 
 std::optional<Value*> ValueNull::convert(common::bytecodes::ApicaTypeBytecode) const {

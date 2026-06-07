@@ -115,6 +115,10 @@ std::optional<Value*> ValueU16::increment() {
     return new ValueU16(this->value.value()++);
 }
 
+std::optional<Value*> ValueU16::leftIncrement() {
+    return new ValueU16(++this->value.value());
+}
+
 std::optional<Value*> ValueU16::subtract(const Value *other) const {
     switch (other->getKind()) {
         case common::bytecodes::ApicaTypeBytecode::I8: {
@@ -185,8 +189,16 @@ std::optional<Value*> ValueU16::decrement() {
     return new ValueU16(this->value.value()--);
 }
 
+std::optional<Value*> ValueU16::leftDecrement() {
+    return new ValueU16(--this->value.value());
+}
+
 std::optional<Value*> ValueU16::unaryNot() const {
     return new ValueBool(this->value.has_value() ? !this->value.value() : true);
+}
+
+std::optional<Value*> ValueU16::bitwiseNot() const {
+    return new ValueU16(~this->value.value());
 }
 
 std::optional<Value*> ValueU16::convert(common::bytecodes::ApicaTypeBytecode to) const {

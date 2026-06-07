@@ -142,6 +142,10 @@ std::optional<Value*> ValueString::increment() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueString::leftIncrement() {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueString::subtract(const Value *) const {
     return std::nullopt;
 }
@@ -150,8 +154,16 @@ std::optional<Value*> ValueString::decrement() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueString::leftDecrement() {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueString::unaryNot() const {
     return new ValueBool(this->value.has_value() ? this->value.value().empty() : true);
+}
+
+std::optional<Value*> ValueString::bitwiseNot() const {
+    return std::nullopt;
 }
 
 std::optional<Value*> ValueString::convert(common::bytecodes::ApicaTypeBytecode to) const {
