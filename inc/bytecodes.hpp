@@ -85,8 +85,9 @@ namespace common::bytecodes {
         IsKeyReleased =     0x0000000C,
         IsKeyJustPressed =  0x0000000D,
         IsKeyPressed =      0x0000000E,
+        IsKeyJustReleased = 0x0000000F,
 
-        BUILTIN_FUNC_LAST = IsKeyPressed
+        BUILTIN_FUNC_LAST = IsKeyJustReleased
     };
 
     enum ApicaSpecificationBytecode : uint64_t {
