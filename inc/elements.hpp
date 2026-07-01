@@ -26,6 +26,7 @@ namespace common::elements {
         void removeModifier(ElementModifier modifier);
 
         values::Value *getValue() const;
+        bool isError() const;
         bool isErrorOrController() const;
 
         Element *add(const Element *other) const;

@@ -30,6 +30,10 @@ common::values::Value *Element::getValue() const {
     return this->value;
 }
 
+bool Element::isError() const {
+    return this->modifier & ElementModifier::Error;
+}
+
 bool Element::isErrorOrController() const {
     return this->modifier >= ElementModifier::Error && this->modifier <= ElementModifier::Return;
 }
