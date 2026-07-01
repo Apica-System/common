@@ -45,6 +45,10 @@ common::bytecodes::ApicaTypeBytecode ValueError::getKind() const {
     return common::bytecodes::ApicaTypeBytecode::Error;
 }
 
+void ValueError::addTrace(const std::string &) {
+    // Do nothing
+}
+
 std::string ValueError::getErrorMessage() const {
     std::string error_message(this->name.value_or(""));
     if (this->details) {

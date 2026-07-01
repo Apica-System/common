@@ -14,6 +14,7 @@ namespace common::values {
         std::string getTypeRepr() const override;
         common::bytecodes::ApicaTypeBytecode getKind() const override;
 
+        virtual void addTrace(const std::string &trace);
         virtual std::string getErrorMessage() const;
 
         std::optional<Value*> add(const Value *other) const override;

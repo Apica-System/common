@@ -8,7 +8,7 @@ namespace common::values {
     public:
         ValueErrorStackTrace(const std::string &name, const std::string &details);
 
-        void addTrace(const std::string &trace);
+        void addTrace(const std::string &trace) override;
 
         std::string getErrorMessage() const override;
     private:
