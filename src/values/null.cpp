@@ -70,6 +70,22 @@ std::optional<Value*> ValueNull::bitwiseNot() const {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueNull::lessThan(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueNull::lessOrEquals(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueNull::greaterThan(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueNull::greaterOrEquals(const Value *) const {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueNull::convert(common::bytecodes::ApicaTypeBytecode) const {
     return std::nullopt; // null is AUTOMATICALLY converted
 }

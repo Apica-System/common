@@ -45,6 +45,16 @@ common::bytecodes::ApicaTypeBytecode ValueError::getKind() const {
     return common::bytecodes::ApicaTypeBytecode::Error;
 }
 
+std::string ValueError::getErrorMessage() const {
+    std::string error_message(this->name.value_or(""));
+    if (this->details) {
+        error_message += ": ";
+        error_message += this->details.value();
+    }
+
+    return error_message;
+}
+
 std::optional<Value*> ValueError::add(const Value *) const {
     return std::nullopt;
 }
@@ -74,6 +84,21 @@ std::optional<Value*> ValueError::unaryNot() const {
 }
 
 std::optional<Value*> ValueError::bitwiseNot() const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueError::lessThan(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueError::lessOrEquals(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueError::greaterThan(const Value *) const {
+    return std::nullopt;
+}
+std::optional<Value*> ValueError::greaterOrEquals(const Value *) const {
     return std::nullopt;
 }
 

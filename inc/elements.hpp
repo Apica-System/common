@@ -38,6 +38,11 @@ namespace common::elements {
         Element *unaryNot() const;
         Element *bitwiseNot() const;
 
+        Element *lessThan(const Element *other) const;
+        Element *lessOrEquals(const Element *other) const;
+        Element *greaterThan(const Element *other) const;
+        Element *greaterOrEquals(const Element *other) const;
+
         void checkAndConvert(common::bytecodes::ApicaTypeBytecode to);
         Element *convert(common::bytecodes::ApicaTypeBytecode to);
         Element *autoConvert(common::bytecodes::ApicaTypeBytecode to);

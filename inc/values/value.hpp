@@ -35,6 +35,11 @@ namespace common::values {
         virtual std::optional<Value*> unaryNot() const = 0;
         virtual std::optional<Value*> bitwiseNot() const = 0;
 
+        virtual std::optional<Value*> lessThan(const Value *other) const = 0;
+        virtual std::optional<Value*> lessOrEquals(const Value *other) const = 0;
+        virtual std::optional<Value*> greaterThan(const Value *other) const = 0;
+        virtual std::optional<Value*> greaterOrEquals(const Value *other) const = 0;
+
         virtual std::optional<Value*> convert(common::bytecodes::ApicaTypeBytecode to) const = 0;
         virtual std::optional<Value*> autoConvert(common::bytecodes::ApicaTypeBytecode to) const = 0;
     };

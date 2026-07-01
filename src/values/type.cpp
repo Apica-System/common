@@ -93,6 +93,22 @@ std::optional<Value*> ValueType::bitwiseNot() const {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueType::lessThan(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueType::lessOrEquals(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueType::greaterThan(const Value *) const {
+    return std::nullopt;
+}
+
+std::optional<Value*> ValueType::greaterOrEquals(const Value *) const {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueType::convert(common::bytecodes::ApicaTypeBytecode to) const {
     if (this->type_kind) {
         switch (to) {

@@ -25,6 +25,11 @@ namespace common::values {
         std::optional<Value*> unaryNot() const override;
         std::optional<Value*> bitwiseNot() const override;
 
+        std::optional<Value*> lessThan(const Value *other) const override;
+        std::optional<Value*> lessOrEquals(const Value *other) const override;
+        std::optional<Value*> greaterThan(const Value *other) const override;
+        std::optional<Value*> greaterOrEquals(const Value *other) const override;
+
         std::optional<Value*> convert(common::bytecodes::ApicaTypeBytecode to) const override;
         std::optional<Value*> autoConvert(common::bytecodes::ApicaTypeBytecode to) const override;
 

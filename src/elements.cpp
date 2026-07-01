@@ -179,6 +179,82 @@ Element *Element::bitwiseNot() const {
         );
 }
 
+Element *Element::lessThan(const Element *other) const {
+    if (this->value->isNull() || other->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError("<", false)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->lessThan(other->value);
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::binaryOperationError("<", this->value->getTypeRepr(), other->value->getTypeRepr())
+        );
+}
+
+Element *Element::lessOrEquals(const Element *other) const {
+    if (this->value->isNull() || other->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError("<=", false)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->lessOrEquals(other->value);
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::binaryOperationError("<=", this->value->getTypeRepr(), other->value->getTypeRepr())
+        );
+}
+
+Element *Element::greaterThan(const Element *other) const {
+    if (this->value->isNull() || other->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError(">", false)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->greaterThan(other->value);
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::binaryOperationError(">", this->value->getTypeRepr(), other->value->getTypeRepr())
+        );
+}
+
+Element *Element::greaterOrEquals(const Element *other) const {
+    if (this->value->isNull() || other->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError(">=", false)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->greaterOrEquals(other->value);
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::binaryOperationError(">=", this->value->getTypeRepr(), other->value->getTypeRepr())
+        );
+}
+
 void Element::checkAndConvert(common::bytecodes::ApicaTypeBytecode to) {
     if (this->isErrorOrController() || this->value->getKind() == to)
         return;

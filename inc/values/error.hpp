@@ -3,7 +3,7 @@
 #include "values/value.hpp"
 
 namespace common::values {
-    class ValueError final : public Value {
+    class ValueError : public Value {
     public:
         ValueError();
         ValueError(const std::string &name);
@@ -13,6 +13,8 @@ namespace common::values {
         bool isNull() const override;
         std::string getTypeRepr() const override;
         common::bytecodes::ApicaTypeBytecode getKind() const override;
+
+        virtual std::string getErrorMessage() const;
 
         std::optional<Value*> add(const Value *other) const override;
         std::optional<Value*> increment() override;
@@ -24,12 +26,17 @@ namespace common::values {
         std::optional<Value*> unaryNot() const override;
         std::optional<Value*> bitwiseNot() const override;
 
+        std::optional<Value*> lessThan(const Value *other) const override;
+        std::optional<Value*> lessOrEquals(const Value *other) const override;
+        std::optional<Value*> greaterThan(const Value *other) const override;
+        std::optional<Value*> greaterOrEquals(const Value *other) const override;
+
         std::optional<Value*> convert(common::bytecodes::ApicaTypeBytecode to) const override;
         std::optional<Value*> autoConvert(common::bytecodes::ApicaTypeBytecode to) const override;
 
         std::optional<std::string> getName() const;
         std::optional<std::string> getDetails() const;
-    private:
+    protected:
         std::optional<std::string> name;
         std::optional<std::string> details;
     };
