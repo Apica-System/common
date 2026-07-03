@@ -35,7 +35,7 @@ bool Element::isError() const {
 }
 
 bool Element::isErrorOrController() const {
-    return this->modifier >= ElementModifier::Error && this->modifier <= ElementModifier::Return;
+    return this->modifier >= ElementModifier::Error && this->modifier <= ElementModifier::Terminate;
 }
 
 Element *Element::add(const Element *other) const {

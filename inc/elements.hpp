@@ -13,7 +13,8 @@ namespace common::elements {
         Break =     1 << 3,
         Continue =  1 << 4,
         Return =    1 << 5,
-        Copy =      1 << 6
+        Terminate = 1 << 6,
+        Copy =      1 << 7
     };
 
     class Element final {
