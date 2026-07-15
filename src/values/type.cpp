@@ -85,6 +85,10 @@ std::optional<Value*> ValueType::leftDecrement() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueType::times(const Value *) const {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueType::unaryNot() const {
     return new ValueBool(this->type_kind.has_value() ? this->type_kind.value() == common::bytecodes::ApicaTypeBytecode::Null : true);
 }

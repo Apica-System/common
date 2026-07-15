@@ -83,6 +83,10 @@ std::optional<Value*> ValueError::leftDecrement() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueError::times(const Value *) const {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueError::unaryNot() const {
     return new ValueBool(!this->name.has_value());
 }

@@ -64,7 +64,7 @@ std::optional<Value*> ValueF32::add(const Value *other) const {
 
         case common::bytecodes::ApicaTypeBytecode::I64: {
             const ValueI64 *i64 = static_cast<const ValueI64*>(other);
-            return new ValueF32(this->value.value() + i64->getValue().value());
+            return new ValueF64(this->value.value() + i64->getValue().value());
         }
 
         case common::bytecodes::ApicaTypeBytecode::U8: {
@@ -138,7 +138,7 @@ std::optional<Value*> ValueF32::subtract(const Value *other) const {
 
         case common::bytecodes::ApicaTypeBytecode::I64: {
             const ValueI64 *i64 = static_cast<const ValueI64*>(other);
-            return new ValueF32(this->value.value() - i64->getValue().value());
+            return new ValueF64(this->value.value() - i64->getValue().value());
         }
 
         case common::bytecodes::ApicaTypeBytecode::U8: {
@@ -191,6 +191,72 @@ std::optional<Value*> ValueF32::decrement() {
 
 std::optional<Value*> ValueF32::leftDecrement() {
     return new ValueF32(--this->value.value());
+}
+
+std::optional<Value*> ValueF32::times(const Value *other) const {
+    switch (other->getKind()) {
+        case common::bytecodes::ApicaTypeBytecode::I8: {
+            const ValueI8 *i8 = static_cast<const ValueI8*>(other);
+            return new ValueF32(this->value.value() * i8->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::I16: {
+            const ValueI16 *i16 = static_cast<const ValueI16*>(other);
+            return new ValueF32(this->value.value() * i16->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::I32: {
+            const ValueI32 *i32 = static_cast<const ValueI32*>(other);
+            return new ValueF32(this->value.value() * i32->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::I64: {
+            const ValueI64 *i64 = static_cast<const ValueI64*>(other);
+            return new ValueF64(this->value.value() * i64->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U8: {
+            const ValueU8 *u8 = static_cast<const ValueU8*>(other);
+            return new ValueF32(this->value.value() * u8->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U16: {
+            const ValueU16 *u16 = static_cast<const ValueU16*>(other);
+            return new ValueF32(this->value.value() * u16->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U32: {
+            const ValueU32 *u32 = static_cast<const ValueU32*>(other);
+            return new ValueF32(this->value.value() * u32->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U64: {
+            const ValueU64 *u64 = static_cast<const ValueU64*>(other);
+            return new ValueF64(this->value.value() * u64->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::F32: {
+            const ValueF32 *f32 = static_cast<const ValueF32*>(other);
+            return new ValueF32(this->value.value() * f32->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::F64: {
+            const ValueF64 *f64 = static_cast<const ValueF64*>(other);
+            return new ValueF64(this->value.value() * f64->getValue().value());
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::Bool: {
+            const ValueBool *boolean = static_cast<const ValueBool*>(other);
+            return new ValueF32(boolean->getValue().value() ? this->value.value() : 0.f);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::Char: {
+            const ValueChar *character = static_cast<const ValueChar*>(other);
+            return new ValueF32(this->value.value() * character->getValue().value());
+        }
+
+        default: return std::nullopt;
+    }
 }
 
 std::optional<Value*> ValueF32::unaryNot() const {

@@ -19,6 +19,7 @@ namespace common::values {
         std::optional<Value*> subtract(const Value *other) const override;
         std::optional<Value*> decrement() override;
         std::optional<Value*> leftDecrement() override;
+        std::optional<Value*> times(const Value *other) const override;
 
         std::optional<Value*> unaryNot() const override;
         std::optional<Value*> bitwiseNot() const override;

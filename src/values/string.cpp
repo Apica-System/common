@@ -158,6 +158,112 @@ std::optional<Value*> ValueString::leftDecrement() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueString::times(const Value *other) const {
+    switch (other->getKind()) {
+        case common::bytecodes::ApicaTypeBytecode::I8: {
+            int8_t count = static_cast<const ValueI8*>(other)->getValue().value();
+            if (count <= 0)
+                return new ValueString("");
+
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (int8_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::I16: {
+            int16_t count = static_cast<const ValueI16*>(other)->getValue().value();
+            if (count <= 0)
+                return new ValueString("");
+
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (int16_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::I32: {
+            int32_t count = static_cast<const ValueI32*>(other)->getValue().value();
+            if (count <= 0)
+                return new ValueString("");
+
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (int32_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::I64: {
+            int64_t count = static_cast<const ValueI64*>(other)->getValue().value();
+            if (count <= 0)
+                return new ValueString("");
+
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (int64_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U8: {
+            uint8_t count = static_cast<const ValueU8*>(other)->getValue().value();
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (uint8_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U16: {
+            uint16_t count = static_cast<const ValueU16*>(other)->getValue().value();
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (uint16_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U32: {
+            uint32_t count = static_cast<const ValueU32*>(other)->getValue().value();
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (uint32_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        case common::bytecodes::ApicaTypeBytecode::U64: {
+            uint64_t count = static_cast<const ValueU64*>(other)->getValue().value();
+            std::string return_value;
+            return_value.reserve(this->value.value().size() * count);
+
+            for (uint64_t i = 0; i < count; i++)
+                return_value += this->value.value();
+            
+            return new ValueString(return_value);
+        }
+
+        default: return std::nullopt;
+    }
+}
+
 std::optional<Value*> ValueString::unaryNot() const {
     return new ValueBool(this->value.has_value() ? this->value.value().empty() : true);
 }

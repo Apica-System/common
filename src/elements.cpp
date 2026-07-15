@@ -152,6 +152,25 @@ Element *Element::leftDecrement() {
         );
 }
 
+Element *Element::times(const Element *other) const {
+    if (this->value->isNull() || other->value->isNull()) {
+        return new Element(
+            ElementModifier::Error,
+            common::values::Value::nullOperationError("*", false)
+        );
+    }
+
+    std::optional<common::values::Value*> result = this->value->times(other->value);
+    return result.has_value()
+        ? new Element(
+            ElementModifier::None,
+            result.value()
+        ) : new Element(
+            ElementModifier::Error,
+            common::values::Value::binaryOperationError("*", this->value->getTypeRepr(), other->value->getTypeRepr())
+        );
+}
+
 Element *Element::unaryNot() const {
     std::optional<common::values::Value*> result = this->value->unaryNot();
     return result.has_value()

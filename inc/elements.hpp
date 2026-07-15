@@ -36,6 +36,7 @@ namespace common::elements {
         Element *subtract(const Element *other) const;
         Element *decrement();
         Element *leftDecrement();
+        Element *times(const Element *other) const;
 
         Element *unaryNot() const;
         Element *bitwiseNot() const;

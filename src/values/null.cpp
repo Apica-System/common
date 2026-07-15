@@ -62,6 +62,10 @@ std::optional<Value*> ValueNull::leftDecrement() {
     return std::nullopt;
 }
 
+std::optional<Value*> ValueNull::times(const Value *) const {
+    return std::nullopt;
+}
+
 std::optional<Value*> ValueNull::unaryNot() const {
     return new ValueBool(true);
 }
