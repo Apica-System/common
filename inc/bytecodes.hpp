@@ -70,24 +70,27 @@ namespace common::bytecodes {
     };
 
     enum ApicaBuiltinFunctionBytecode : uint64_t {
-        QuitApp =           0x00000000,
-        LogInfo =           0x00000001,
-        LognInfo =          0x00000002,
-        LogSuccess =        0x00000003,
-        LognSuccess =       0x00000004,
-        LogWarning =        0x00000005,
-        LognWarning =       0x00000006,
-        LogError =          0x00000007,
-        LognError =         0x00000008,
-        LoadApp =           0x00000009,
-        SetTitle =          0x0000000A,
-        SetResizable =      0x0000000B,
-        IsKeyReleased =     0x0000000C,
-        IsKeyJustPressed =  0x0000000D,
-        IsKeyPressed =      0x0000000E,
-        IsKeyJustReleased = 0x0000000F,
+        QuitApp =               0x00000000,
+        LogInfo =               0x00000001,
+        LognInfo =              0x00000002,
+        LogSuccess =            0x00000003,
+        LognSuccess =           0x00000004,
+        LogWarning =            0x00000005,
+        LognWarning =           0x00000006,
+        LogError =              0x00000007,
+        LognError =             0x00000008,
+        LoadApp =               0x00000009,
+        SetTitle =              0x0000000A,
+        SetResizable =          0x0000000B,
+        IsKeyReleased =         0x0000000C,
+        IsKeyJustPressed =      0x0000000D,
+        IsKeyPressed =          0x0000000E,
+        IsKeyJustReleased =     0x0000000F,
+        LoadSpritesheet2D =     0x00000010,
+        UnloadSpritesheet2D =   0x00000011,
+        DrawSprite2DAt =        0x00000012,
 
-        BUILTIN_FUNC_LAST = IsKeyJustReleased
+        BUILTIN_FUNC_LAST = DrawSprite2DAt
     };
 
     enum ApicaSpecificationBytecode : uint64_t {
